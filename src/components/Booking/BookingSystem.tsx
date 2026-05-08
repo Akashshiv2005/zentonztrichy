@@ -49,26 +49,26 @@ export const BookingSystem: React.FC = () => {
     if (!data.date || !data.time) return false;
     const now = new Date();
     if (data.date.toDateString() !== now.toDateString()) return false;
-    
+
     const timeMatch = data.time.match(/(\d+):(\d+)\s+(AM|PM)/i);
     if (!timeMatch) return false;
-    
+
     let hours = parseInt(timeMatch[1]);
     const minutes = parseInt(timeMatch[2]);
     const modifier = timeMatch[3].toUpperCase();
-    
+
     if (hours === 12) {
       hours = modifier === 'PM' ? 12 : 0;
     } else if (modifier === 'PM') {
       hours += 12;
     }
-    
+
     const selectedDate = new Date(data.date);
     selectedDate.setHours(hours, minutes, 0, 0);
-    
+
     const diffInMinutes = (selectedDate.getTime() - now.getTime()) / 60000;
     // If the booking is within the next 20 minutes (or they are up to 15 mins late)
-    return diffInMinutes >= -15 && diffInMinutes <= 20; 
+    return diffInMinutes >= -15 && diffInMinutes <= 20;
   };
 
   // Step 1: Services
@@ -94,11 +94,10 @@ export const BookingSystem: React.FC = () => {
                 setData({ ...data, service });
                 setTimeout(nextStep, 300); // Auto-advance
               }}
-              className={`p-5 rounded-3xl cursor-pointer border-2 transition-all duration-300 flex items-center gap-4 ${
-                isSelected 
-                  ? 'border-primary bg-primary/5 shadow-[0_0_20px_rgba(201,162,74,0.15)]' 
+              className={`p-5 rounded-3xl cursor-pointer border-2 transition-all duration-300 flex items-center gap-4 ${isSelected
+                  ? 'border-primary bg-primary/5 shadow-[0_0_20px_rgba(201,162,74,0.15)]'
                   : 'border-white/5 bg-on-surface/5 hover:bg-on-surface/10'
-              }`}
+                }`}
             >
               <div className={`p-3 rounded-2xl ${isSelected ? 'bg-primary text-background' : 'bg-background text-primary'}`}>
                 {service.icon}
@@ -154,11 +153,10 @@ export const BookingSystem: React.FC = () => {
                   setData({ ...data, date });
                   setTimeout(nextStep, 300);
                 }}
-                className={`flex flex-col items-center justify-center p-4 rounded-3xl cursor-pointer border-2 transition-all duration-300 ${
-                  isSelected 
-                    ? 'border-primary bg-primary text-background shadow-luxury-deep' 
+                className={`flex flex-col items-center justify-center p-4 rounded-3xl cursor-pointer border-2 transition-all duration-300 ${isSelected
+                    ? 'border-primary bg-primary text-background shadow-luxury-deep'
                     : 'border-white/5 bg-on-surface/5 text-on-surface hover:bg-on-surface/10'
-                }`}
+                  }`}
               >
                 <span className={`text-[10px] font-black uppercase tracking-widest mb-1 ${isSelected ? 'text-background/80' : 'text-on-surface/50'}`}>
                   {isToday ? 'Today' : dayName}
@@ -181,13 +179,13 @@ export const BookingSystem: React.FC = () => {
     if (data.date) {
       let current = new Date(data.date);
       current.setHours(10, 0, 0, 0); // 10:00 AM
-      
+
       const endTime = new Date(data.date);
       endTime.setHours(21, 0, 0, 0); // 9:00 PM
-      
+
       const now = new Date();
       const isToday = current.toDateString() === now.toDateString();
-      
+
       while (current <= endTime) {
         if (!isToday || current >= now) {
           slots.push(current.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }));
@@ -219,11 +217,10 @@ export const BookingSystem: React.FC = () => {
                   setData({ ...data, time });
                   setTimeout(nextStep, 300);
                 }}
-                className={`text-center p-4 rounded-2xl cursor-pointer border-2 transition-all duration-300 font-bold tracking-widest text-sm ${
-                  isSelected 
-                    ? 'border-primary bg-primary text-background shadow-[0_0_15px_rgba(201,162,74,0.3)]' 
+                className={`text-center p-4 rounded-2xl cursor-pointer border-2 transition-all duration-300 font-bold tracking-widest text-sm ${isSelected
+                    ? 'border-primary bg-primary text-background shadow-[0_0_15px_rgba(201,162,74,0.3)]'
                     : 'border-white/5 bg-on-surface/5 text-on-surface hover:border-primary/50'
-                }`}
+                  }`}
               >
                 {time}
               </div>
@@ -265,10 +262,10 @@ export const BookingSystem: React.FC = () => {
           <label className="text-[10px] font-black uppercase tracking-widest text-primary ml-4">Full Name</label>
           <div className="relative">
             <User className="absolute left-4 top-1/2 -translate-y-1/2 text-on-surface/40 w-5 h-5" />
-            <input 
-              type="text" 
+            <input
+              type="text"
               value={data.user.name}
-              onChange={e => setData({...data, user: {...data.user, name: e.target.value}})}
+              onChange={e => setData({ ...data, user: { ...data.user, name: e.target.value } })}
               className="w-full bg-on-surface/5 border border-white/10 rounded-2xl py-4 pl-12 pr-4 text-on-surface placeholder:text-on-surface/30 focus:outline-none focus:border-primary transition-colors"
               placeholder="Enter your name"
             />
@@ -278,10 +275,10 @@ export const BookingSystem: React.FC = () => {
           <label className="text-[10px] font-black uppercase tracking-widest text-primary ml-4">Phone Number</label>
           <div className="relative">
             <Phone className="absolute left-4 top-1/2 -translate-y-1/2 text-on-surface/40 w-5 h-5" />
-            <input 
-              type="tel" 
+            <input
+              type="tel"
               value={data.user.phone}
-              onChange={e => setData({...data, user: {...data.user, phone: e.target.value}})}
+              onChange={e => setData({ ...data, user: { ...data.user, phone: e.target.value } })}
               className="w-full bg-on-surface/5 border border-white/10 rounded-2xl py-4 pl-12 pr-4 text-on-surface placeholder:text-on-surface/30 focus:outline-none focus:border-primary transition-colors"
               placeholder="+91 00000 00000"
             />
@@ -289,15 +286,15 @@ export const BookingSystem: React.FC = () => {
         </div>
         <div className="space-y-1">
           <label className="text-[10px] font-black uppercase tracking-widest text-primary ml-4">Special Requests</label>
-          <textarea 
+          <textarea
             value={data.user.notes}
-            onChange={e => setData({...data, user: {...data.user, notes: e.target.value}})}
+            onChange={e => setData({ ...data, user: { ...data.user, notes: e.target.value } })}
             className="w-full bg-on-surface/5 border border-white/10 rounded-2xl py-4 px-5 text-on-surface placeholder:text-on-surface/30 focus:outline-none focus:border-primary transition-colors min-h-[120px] resize-none"
             placeholder="Any specific requests or conditions?"
           />
         </div>
-        
-        <button 
+
+        <button
           onClick={nextStep}
           disabled={!data.user.name || !data.user.phone}
           className="w-full mt-6 bg-primary text-background py-5 rounded-2xl font-black uppercase tracking-[0.2em] text-sm hover:shadow-[0_0_20px_rgba(201,162,74,0.4)] disabled:opacity-50 disabled:cursor-not-allowed transition-all"
@@ -333,7 +330,7 @@ export const BookingSystem: React.FC = () => {
           </div>
         </div>
       )}
-      
+
       <div className="bg-on-surface/5 rounded-3xl p-6 sm:p-8 space-y-6 border border-white/5">
         <div className="flex gap-4 items-center pb-6 border-b border-white/10">
           <div className="p-4 bg-primary text-background rounded-2xl">
@@ -344,7 +341,7 @@ export const BookingSystem: React.FC = () => {
             <p className="text-sm text-primary font-black uppercase tracking-widest mt-1">{data.service?.price} • {data.service?.duration}</p>
           </div>
         </div>
-        
+
         <div className="space-y-4">
           <div className="flex items-center gap-4 text-on-surface/80">
             <CalendarIcon className="w-5 h-5 text-primary" />
@@ -361,7 +358,7 @@ export const BookingSystem: React.FC = () => {
         </div>
       </div>
 
-      <button 
+      <button
         onClick={nextStep}
         className="w-full bg-primary text-background py-5 rounded-2xl font-black uppercase tracking-[0.2em] text-sm hover:shadow-[0_0_20px_rgba(201,162,74,0.4)] transition-all flex items-center justify-center gap-2"
       >
@@ -383,7 +380,7 @@ export const BookingSystem: React.FC = () => {
         <CheckCircle size={48} />
       </div>
       <h2 className="text-3xl sm:text-4xl font-black text-on-surface font-serif uppercase">Booking Successful!</h2>
-      
+
       <div className="max-w-md space-y-4 mt-6">
         <p className="text-on-surface/80 text-sm sm:text-base font-medium leading-relaxed">
           Your appointment for <span className="text-primary font-bold">{data.service?.name}</span> has been confirmed for <span className="text-primary font-bold">{data.date?.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })} at {data.time}</span>.
@@ -403,7 +400,7 @@ export const BookingSystem: React.FC = () => {
         </div>
       </div>
 
-      <button 
+      <button
         onClick={() => {
           setStep(1);
           setData({ service: null, date: null, time: null, user: { name: '', phone: '', notes: '' } });
@@ -417,12 +414,12 @@ export const BookingSystem: React.FC = () => {
 
   return (
     <div className="max-w-2xl mx-auto w-full bg-surface sm:bg-on-surface/[0.02] sm:border border-white/5 sm:rounded-[3rem] p-4 sm:p-10 shadow-luxury-deep">
-      
+
       {/* Progress Header */}
       {step < 6 && (
         <div className="mb-10 flex items-center justify-between">
           {step > 1 && step < 5 ? (
-            <button 
+            <button
               onClick={prevStep}
               className="flex items-center gap-2 text-on-surface/50 hover:text-primary transition-colors text-xs font-black uppercase tracking-widest"
             >
@@ -430,15 +427,14 @@ export const BookingSystem: React.FC = () => {
               Back
             </button>
           ) : <div className="w-20"></div>}
-          
+
           <div className="flex gap-2">
             {[1, 2, 3, 4].map(i => (
-               <div 
-                 key={i} 
-                 className={`h-1.5 rounded-full transition-all duration-300 ${
-                   i === step ? 'w-8 bg-primary' : i < step ? 'w-4 bg-primary/50' : 'w-4 bg-on-surface/10'
-                 }`}
-               />
+              <div
+                key={i}
+                className={`h-1.5 rounded-full transition-all duration-300 ${i === step ? 'w-8 bg-primary' : i < step ? 'w-4 bg-primary/50' : 'w-4 bg-on-surface/10'
+                  }`}
+              />
             ))}
           </div>
           <div className="w-20 text-right text-[10px] font-black uppercase tracking-widest text-primary/50">

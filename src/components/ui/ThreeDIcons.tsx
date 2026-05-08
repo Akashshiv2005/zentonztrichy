@@ -124,3 +124,18 @@ export const WartRemoval3D = () => (
   </IconWrapper>
 );
 
+export const EarPiercing3D = () => (
+  <IconWrapper>
+    <defs>
+      <linearGradient id="earGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stopColor="#FDF2F8" />
+        <stop offset="100%" stopColor="#F472B6" />
+      </linearGradient>
+    </defs>
+    <circle cx="12" cy="12" r="9" fill="url(#earGrad)" fillOpacity="0.9" />
+    <circle cx="12" cy="12" r="4" fill="white" fillOpacity="0.3" />
+    <circle cx="12" cy="12" r="2" fill="white" />
+    <path d="M12 8v8M8 12h8" stroke="white" strokeWidth="1" strokeLinecap="round" opacity="0.5" />
+  </IconWrapper>
+);
+

@@ -10,6 +10,7 @@ import {
   Nails3D,
   LiceRemoval3D,
   WartRemoval3D,
+  EarPiercing3D,
 } from "../ui/ThreeDIcons";
 
 const SERVICES_DATA = [
@@ -75,6 +76,13 @@ const SERVICES_DATA = [
     icon: <WartRemoval3D />,
     color: "#EA580C", // Deep Orange
     gradient: "linear-gradient(200deg, #FFEDD5 0%, #EA580C 100%)",
+  },
+  {
+    title: "Ear Piercing",
+    desc: "Safe and precise ear piercing using professional, sterilized equipment.",
+    icon: <EarPiercing3D />,
+    color: "#F472B6", // Pink
+    gradient: "linear-gradient(200deg, #FDF2F8 0%, #F472B6 100%)",
   },
 ];
 

@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 import { Sparkles } from "lucide-react";
 import { Link } from "react-router-dom";
 
-import skinImage from "../../assets/facialwebpimages/facial5.webp";
+import skinImage from "../../assets/facialwebpimages/facial6.png";
 import facialImage from "../../assets/facialwebpimages/facial2.webp";
 import manicureImage from "../../assets/pedicurewebpimages/manicure1.webp";
 import hairSpaImage from "../../assets/hairspawebpimages/hairspa3.webp";
@@ -10,7 +10,7 @@ import bridalImage from "../../assets/bridalwebpimages/bridal1.webp";
 import nailImage from "../../assets/nailwebpimages/nail.jpeg";
 import liceImage from "../../assets/licewebpimages/lice4.webp";
 import hairStyleImage from "../../assets/hairwebp images/curlyhairstyle.webp";
-import wartRemovalImage from "../../assets/wartremovalwebpimages/wartremovalimg.webp";
+import wartRemovalImage from "../../assets/wartremovalwebpimages/wartdarkimg1.webp";
 import earPiercingImage from "../../assets/earpiercingimages/earpiercing.webp";
 import { ParallaxArrow } from "../ScrollParallaxCard/ParallaxArrow";
 import { ScrollParallaxCard } from "../ScrollParallaxCard/ScrollParallaxCard";
@@ -175,7 +175,7 @@ export function ParallaxServicesSection() {
         </ScrollReveal>
       </div>
 
-      <Lightbox 
+      <Lightbox
         isOpen={!!selectedImage}
         onClose={() => setSelectedImage(null)}
         image={selectedImage?.url || ""}
