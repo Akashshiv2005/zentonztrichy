@@ -45,6 +45,19 @@ export const BookingSystem: React.FC = () => {
   const nextStep = () => setStep(s => Math.min(s + 1, 6));
   const prevStep = () => setStep(s => Math.max(s - 1, 1));
 
+  const fetchBookedSlots = async (service: string, date: Date): Promise<string[]> => {
+    try {
+      const dateStr = date.toISOString().split('T')[0];
+      const res = await fetch(`http://localhost:8081/api/reservations/booked-slots?service=${service}&date=${dateStr}`);
+      return await res.json();
+    } catch {
+      return [];
+    }
+  };
+
+  const [bookedSlots, setBookedSlots] = useState<string[]>([]);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
   const isUrgentBooking = () => {
     if (!data.date || !data.time) return false;
     const now = new Date();
@@ -151,6 +164,7 @@ export const BookingSystem: React.FC = () => {
                 key={idx}
                 onClick={() => {
                   setData({ ...data, date });
+                  if (data.service) fetchBookedSlots(data.service.id, date).then(setBookedSlots);
                   setTimeout(nextStep, 300);
                 }}
                 className={`flex flex-col items-center justify-center p-4 rounded-3xl cursor-pointer border-2 transition-all duration-300 ${isSelected
@@ -210,19 +224,24 @@ export const BookingSystem: React.FC = () => {
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
           {slots.length > 0 ? slots.map((time, idx) => {
             const isSelected = data.time === time;
+            const isBooked = bookedSlots.includes(time);
             return (
               <div
                 key={idx}
                 onClick={() => {
+                  if (isBooked) return;
                   setData({ ...data, time });
                   setTimeout(nextStep, 300);
                 }}
-                className={`text-center p-4 rounded-2xl cursor-pointer border-2 transition-all duration-300 font-bold tracking-widest text-sm ${isSelected
-                    ? 'border-primary bg-primary text-background shadow-[0_0_15px_rgba(201,162,74,0.3)]'
-                    : 'border-white/5 bg-on-surface/5 text-on-surface hover:border-primary/50'
-                  }`}
+                className={`text-center p-4 rounded-2xl border-2 transition-all duration-300 font-bold tracking-widest text-sm ${
+                  isBooked
+                    ? 'border-red-500/30 bg-red-500/10 text-red-400 cursor-not-allowed'
+                    : isSelected 
+                    ? 'border-primary bg-primary text-background shadow-[0_0_15px_rgba(201,162,74,0.3)] cursor-pointer' 
+                    : 'border-white/5 bg-on-surface/5 text-on-surface hover:border-primary/50 cursor-pointer'
+                }`}
               >
-                {time}
+                {isBooked ? `${time} (Booked)` : time}
               </div>
             );
           }) : (
@@ -358,12 +377,35 @@ export const BookingSystem: React.FC = () => {
         </div>
       </div>
 
-      <button
-        onClick={nextStep}
-        className="w-full bg-primary text-background py-5 rounded-2xl font-black uppercase tracking-[0.2em] text-sm hover:shadow-[0_0_20px_rgba(201,162,74,0.4)] transition-all flex items-center justify-center gap-2"
+      <button 
+        onClick={async () => {
+          setIsSubmitting(true);
+          try {
+            const res = await fetch('http://localhost:8081/api/reservations', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                service: data.service?.id,
+                date: data.date?.toISOString().split('T')[0],
+                time: data.time,
+                name: data.user.name,
+                phone: data.user.phone,
+                notes: data.user.notes,
+              }),
+            });
+            if (!res.ok) throw new Error();
+            nextStep();
+          } catch {
+            alert('Something went wrong. Please try again.');
+          } finally {
+            setIsSubmitting(false);
+          }
+        }}
+        disabled={isSubmitting}
+        className="w-full bg-primary text-background py-5 rounded-2xl font-black uppercase tracking-[0.2em] text-sm hover:shadow-[0_0_20px_rgba(201,162,74,0.4)] transition-all flex items-center justify-center gap-2 disabled:opacity-60"
       >
         <Sparkles size={18} />
-        Confirm Appointment
+        {isSubmitting ? 'Confirming...' : 'Confirm Appointment'}
       </button>
     </motion.div>
   );
