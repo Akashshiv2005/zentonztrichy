@@ -1,0 +1,460 @@
+.voyage-slider-root {
+  --slide-width: min(60vw, 280px);
+  --slide-aspect: 2 / 3;
+  --slide-transition-duration: 600ms;
+  --slide-transition-easing: ease;
+  --font-archivo: "Montserrat", sans-serif;
+  --font-clash-display: "Poppins", sans-serif;
+
+  position: relative;
+  width: 100%;
+  min-height: 420px;
+  height: clamp(420px, 60vh, 600px);
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  background: var(--background, #F4F1EC);
+  border-radius: clamp(1.5rem, 4vw, 3rem);
+  box-shadow: 0 40px 100px rgba(115, 92, 0, 0.15);
+}
+
+@media (min-width: 481px) {
+  .voyage-slider-root {
+    --slide-width: min(35vw, 300px);
+    min-height: 500px;
+    height: clamp(500px, 75vh, 750px);
+  }
+}
+
+@media (min-width: 769px) {
+  .voyage-slider-root {
+    --slide-width: min(25vw, 300px);
+    height: 80vh;
+  }
+}
+
+.voyage-slider-root button {
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+
+.voyage-slider-root button:focus {
+  outline: none;
+  border: none;
+}
+
+/* ─── Slider layout ─── */
+.voyage-slider {
+  width: calc(3 * var(--slide-width));
+  height: calc(2 * var(--slide-height));
+  display: flex;
+  align-items: center;
+  z-index: 10;
+}
+
+.voyage-slider--btn {
+  --size: 32px;
+  position: absolute;
+  bottom: 2rem;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0.5;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  border-radius: 50%;
+  transition: all 300ms cubic-bezier(0.215, 0.61, 0.355, 1);
+  z-index: 1001;
+  width: 50px;
+  height: 50px;
+}
+
+.voyage-slider--btn__prev {
+  left: 1.5rem;
+}
+
+.voyage-slider--btn__next {
+  right: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .voyage-slider--btn {
+    --size: 24px;
+    width: 60px;
+    height: 60px;
+    bottom: 3rem;
+  }
+
+  .voyage-slider--btn__prev {
+    left: auto;
+    right: 8rem;
+  }
+
+  .voyage-slider--btn__next {
+    right: 3rem;
+  }
+}
+
+.voyage-slider--btn svg {
+  width: var(--size);
+  height: var(--size);
+  stroke: white;
+}
+
+.voyage-slider--btn:hover {
+  opacity: 1;
+  background: var(--color-primary, #735c00);
+  border-color: transparent !important;
+  transform: translateY(-5px);
+}
+
+.voyage-slides__wrapper {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  place-items: center;
+}
+
+.voyage-slides__wrapper>* {
+  grid-area: 1 / -1;
+}
+
+.voyage-slides,
+.voyage-slides--infos {
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  display: grid;
+  place-items: center;
+  position: relative;
+}
+
+.voyage-slides>*,
+.voyage-slides--infos>* {
+  grid-area: 1 / -1;
+}
+
+/* ─── Slide ─── */
+.voyage-slide {
+  --slide-tx: 0px;
+  --slide-ty: 0vh;
+  --padding: 0px;
+  --offset: 0;
+
+  width: var(--slide-width);
+  height: auto;
+  aspect-ratio: var(--slide-aspect);
+  user-select: none;
+  perspective: 800px;
+
+  transform: perspective(1000px) translate3d(var(--slide-tx), var(--slide-ty), var(--slide-tz, 0)) rotateY(var(--slide-rotY)) scale(var(--slide-scale));
+  transition: transform var(--slide-transition-duration) var(--slide-transition-easing);
+}
+
+.voyage-slide[data-current] {
+  --slide-scale: 1.1;
+  --slide-tz: 0px;
+  --slide-tx: 0px;
+  --slide-rotY: 0;
+  z-index: 50 !important;
+  pointer-events: auto;
+}
+
+.voyage-slide[data-next] {
+  --slide-tx: calc(0.85 * var(--slide-width));
+  --slide-rotY: -35deg;
+  z-index: 20;
+  opacity: 0.6;
+  filter: blur(2px);
+}
+
+.voyage-slide[data-previous] {
+  --slide-tx: calc(-0.85 * var(--slide-width));
+  --slide-rotY: 35deg;
+  z-index: 20;
+  opacity: 0.6;
+  filter: blur(2px);
+}
+
+.voyage-slide:not([data-current]) {
+  --slide-scale: 1;
+  --slide-tz: 0;
+  pointer-events: none;
+}
+
+@media (min-width: 768px) {
+  .voyage-slide[data-current] {
+    --slide-scale: 1.2;
+  }
+
+  .voyage-slide[data-next] {
+    --slide-tx: calc(1 * var(--slide-width) * 1.02);
+    --slide-rotY: -45deg;
+    opacity: 1;
+    filter: blur(0);
+  }
+
+  .voyage-slide[data-previous] {
+    --slide-tx: calc(-1 * var(--slide-width) * 1.02);
+    --slide-rotY: 45deg;
+    opacity: 1;
+    filter: blur(0);
+  }
+}
+
+.voyage-slide[data-current] .voyage-slide--image {
+  filter: brightness(1);
+  transition: all 0.5s ease;
+}
+
+.voyage-slide[data-current]:hover .voyage-slide--image {
+  filter: brightness(1.15) contrast(1.05);
+  transform: translate(-50%, -50%) scale(1.3);
+}
+
+.voyage-slide:not([data-current]) .voyage-slide--image {
+  filter: brightness(0.6);
+  transition: all 0.5s ease;
+}
+
+.voyage-slide:not([data-current]):hover .voyage-slide--image {
+  filter: brightness(0.9);
+}
+
+.voyage-slide__inner {
+  --rotX: 0;
+  --rotY: 0;
+  --bgPosX: 0%;
+  --bgPosY: 0%;
+
+  position: relative;
+  left: calc(var(--padding) / 2);
+  top: calc(var(--padding) / 2);
+  width: calc(100% - var(--padding));
+  height: calc(100% - var(--padding));
+  transform-style: preserve-3d;
+  transform: rotateX(var(--rotX)) rotateY(var(--rotY));
+  border-radius: clamp(1rem, 3vw, 2rem);
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.voyage-slide--image__wrapper {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.voyage-slide--image {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  object-fit: cover;
+  transform: translate(-50%, -50%) scale(1.25) translate3d(var(--bgPosX), var(--bgPosY), 0);
+  transition: filter var(--slide-transition-duration) var(--slide-transition-easing);
+}
+
+/* ─── Background blur ─── */
+.voyage-slide__bg {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 200%;
+  height: 200%;
+  transform: translate(-50%, -50%);
+  background-image: var(--bg);
+  background-size: cover;
+  background-position: center center;
+  z-index: 0;
+  pointer-events: none;
+  filter: blur(80px);
+  transition: opacity var(--slide-transition-duration) ease;
+}
+
+.voyage-slide__bg::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.voyage-slide__bg[data-previous],
+.voyage-slide__bg[data-next] {
+  opacity: 0;
+  transform: translate(-50%, -50%);
+}
+
+/* ─── Slide Info ─── */
+.voyage-slide-info {
+  --padding: 0px;
+  position: relative;
+  width: var(--slide-width);
+  height: auto;
+  aspect-ratio: var(--slide-aspect);
+  user-select: none;
+  perspective: 800px;
+  z-index: 100;
+}
+
+.voyage-slide-info[data-current] .voyage-slide-info--text span,
+.voyage-slide-info[data-current] .voyage-slide-info--icon {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+  transition-delay: 250ms;
+}
+
+.voyage-slide-info:not([data-current]) .voyage-slide-info--text span,
+.voyage-slide-info:not([data-current]) .voyage-slide-info--icon {
+  opacity: 0;
+  transform: translate3d(0, 100%, 0);
+  transition-delay: 0ms;
+}
+
+.voyage-slide-info__inner {
+  position: relative;
+  left: calc(var(--padding) / 2);
+  top: calc(var(--padding) / 2);
+  width: calc(100% - var(--padding));
+  height: calc(100% - var(--padding));
+  transform-style: preserve-3d;
+  transform: rotateX(var(--rotX)) rotateY(var(--rotY));
+}
+
+.voyage-slide-info--text__wrapper {
+  --z-offset: 45px;
+  position: absolute;
+  height: fit-content;
+  left: 0%;
+  bottom: 10%;
+  transform: translateZ(var(--z-offset));
+  z-index: 100;
+  pointer-events: none;
+  text-align: left;
+}
+
+@media (max-width: 480px) {
+  .voyage-slide-info--text__wrapper {
+    left: 10px;
+    right: 10px;
+    bottom: 8%;
+    text-align: center;
+  }
+
+  .voyage-slide-info--icon {
+    margin-inline: auto;
+  }
+
+  .voyage-slide-info--text[data-description] {
+    margin-inline: auto;
+    font-size: 0.8rem;
+  }
+}
+
+.voyage-slide-info--icon {
+  margin-bottom: 12px;
+  color: var(--color-primary-container);
+  display: inline-block;
+  transition: var(--slide-transition-duration) var(--slide-transition-easing);
+  transition-property: opacity, transform;
+}
+
+@media (min-width: 768px) {
+  .voyage-slide-info--icon {
+    margin-bottom: 20px;
+  }
+}
+
+.voyage-slide-info--text {
+  font-family: var(--font-clash-display);
+  color: #9e8300;
+  overflow: hidden;
+}
+
+.voyage-slide-info--text span {
+  display: block;
+  white-space: normal;
+  transition: var(--slide-transition-duration) var(--slide-transition-easing);
+  transition-property: opacity, transform;
+  animation: text-light-blink 3s infinite ease-in-out;
+}
+
+@keyframes text-light-blink {
+  0%, 100% { color: #0c080a; filter: brightness(1); text-shadow: 0 0 0px transparent; }
+  50% { color: #ffffff; filter: brightness(1.2); text-shadow: 0 0 15px rgba(255, 255, 255, 0.5); }
+}
+
+.voyage-slide-info--text[data-title] {
+  font-size: clamp(1.2rem, 4vw, 2.2rem);
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  line-height: 1;
+  margin-bottom: 6px;
+  color: #0c080a;
+}
+
+.voyage-slide-info--text[data-subtitle] {
+  font-size: clamp(0.9rem, 2cqw, 2rem);
+  font-weight: 600;
+  margin-left: 0.5rem;
+  color: #0c080a;
+}
+
+.voyage-slide-info--text[data-description] {
+  margin-top: 8px;
+  margin-left: 0.5rem;
+  font-size: clamp(0.75rem, 1.5cqw, 1.1rem);
+  font-family: var(--font-archivo);
+  font-weight: 400;
+  color: #0c080a;
+  max-width: min(80vw, 350px);
+  white-space: normal;
+}
+
+@media (min-width: 768px) {
+  .voyage-slide-info--text[data-description] {
+    max-width: 300px;
+  }
+}
+
+/* ─── Progress Bar ─── */
+.voyage-slider-progress-container {
+  position: absolute;
+  bottom: 5%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: clamp(120px, 30vw, 200px);
+  height: 3px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  overflow: hidden;
+  z-index: 1000;
+}
+
+.voyage-slider-progress-bar {
+  height: 100%;
+  width: 0%;
+  background: var(--color-primary, #735c00);
+  border-radius: 10px;
+  animation: progress-load 5s linear forwards;
+}
+
+.voyage-slider-progress-bar.paused {
+  animation-play-state: paused;
+}
+
+@keyframes progress-load {
+  0% {
+    width: 0%;
+  }
+
+  100% {
+    width: 100%;
+  }
+}

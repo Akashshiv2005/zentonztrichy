@@ -1,0 +1,142 @@
+/* ─── Snap sections ─── */
+.snap-section {
+  min-height: 100svh;
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+  background-color: var(--background);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  will-change: transform;
+}
+
+.gallery-hero-section {
+  width: 100%;
+  min-height: 100svh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  background-color: var(--background);
+  z-index: 100;
+}
+
+.gallery-content-outer {
+  position: relative;
+  z-index: 10;
+  width: 100%;
+  max-width: 750px;
+  padding: clamp(1rem, 4vh, 3rem) clamp(1rem, 3vw, 2rem);
+  display: flex;
+  flex-direction: column;
+  gap: clamp(0.75rem, 2vh, 1.5rem);
+  align-items: center;
+  margin: 0 auto;
+}
+
+.gallery-image-wrapper {
+  width: 100%;
+  max-width: 650px;
+  height: clamp(240px, 40vh, 50vh);
+  border-radius: clamp(1.5rem, 4vw, 3rem);
+  overflow: hidden;
+  position: relative;
+  box-shadow: 0 30px 80px -20px rgba(0, 0, 0, 0.15);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.gallery-text-reveal {
+  width: 100%;
+  max-width: 700px;
+  text-align: center;
+}
+
+/* ─── Portfolio Label ─── */
+.portfolio-label {
+  position: absolute;
+  top: 8%;
+  left: 4vw;
+  font-size: clamp(2.5rem, 8vw, 8rem);
+  font-weight: 800;
+  opacity: 0.06;
+  color: var(--color-on-surface);
+  pointer-events: none;
+  user-select: none;
+}
+
+/* ─── Scroll Guide ─── */
+.scroll-guide {
+  position: absolute;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  items-center: center;
+  gap: 0.75rem;
+  z-index: 30;
+  pointer-events: none;
+}
+
+.mouse-icon {
+  width: 24px;
+  height: 40px;
+  border: 2px solid rgba(255, 255, 255, 0.5);
+  border-radius: 12px;
+  position: relative;
+}
+
+.mouse-icon::before {
+  content: '';
+  position: absolute;
+  top: 6px;
+  left: 50%;
+  width: 4px;
+  height: 8px;
+  background: white;
+  border-radius: 2px;
+  transform: translateX(-50%);
+  animation: scroll-wheel 1.5s ease-in-out infinite;
+}
+
+@keyframes scroll-wheel {
+  0% { transform: translate(-50%, 0); opacity: 0; }
+  30% { opacity: 1; }
+  100% { transform: translate(-50%, 15px); opacity: 0; }
+}
+
+.scroll-text {
+  font-size: 10px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.3em;
+  color: white;
+  white-space: nowrap;
+}
+
+@media (min-width: 641px) {
+  .mouse-icon {
+    border-color: rgba(15, 23, 42, 0.4);
+  }
+  .mouse-icon::before {
+    background: #0f172a;
+  }
+  .scroll-text {
+    color: #0f172a;
+  }
+}
+
+/* ─── Interactive Hints ─── */
+.hint-text {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: var(--primary);
+  opacity: 0.8;
+  margin-bottom: 1rem;
+  display: flex;
+  items-center: center;
+  gap: 0.5rem;
+}

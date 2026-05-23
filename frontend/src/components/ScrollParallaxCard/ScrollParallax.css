@@ -1,0 +1,306 @@
+@import url("https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;500;600;700&family=Righteous&display=swap");
+
+.scroll-parallax-section {
+  --color-text: var(--color-primary);
+  --color-bg: transparent;
+  --color-link: #000;
+  --color-link-hover: var(--color-primary-container);
+  --aspect-ratio: 1 / 1.5;
+  --imgwidthmax: 500px;
+  --size-title: clamp(2.5rem, 5vw, 6rem);
+  --font-weight-title: 400;
+  --color-description: #475569;
+  --font-title: "Dancing Script", serif;
+  --imgwidthmax: 440px;
+  position: relative;
+  width: 100%;
+}
+
+.parallax-page__title {
+  font-family: "Righteous", cursive;
+  font-size: var(--size-title);
+  font-weight: 400;
+  margin: 0 0 1rem;
+  color: #0f172a;
+  text-align: center;
+  opacity: 0.08;
+  user-select: none;
+  pointer-events: none;
+}
+
+.parallax-arrow {
+  width: 40px;
+  height: 60px;
+  position: absolute;
+  top: 4rem;
+  right: 5%;
+  z-index: 50;
+}
+
+@media (min-width: 481px) {
+  .parallax-arrow {
+    width: 60px;
+    height: 80px;
+    right: 10%;
+  }
+}
+
+.parallax-arrow path {
+  stroke: var(--color-primary);
+  stroke-width: 2px;
+  fill: transparent;
+  animation: parallax-down 2s infinite;
+}
+
+@keyframes parallax-down {
+  0% {
+    opacity: 0;
+    transform: translateY(0);
+  }
+
+  25% {
+    opacity: 1;
+  }
+
+  75% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  100% {
+    opacity: 0;
+  }
+}
+
+.parallax-arrow path.a1 {
+  animation-delay: -1s;
+}
+
+.parallax-arrow path.a2 {
+  animation-delay: -0.5s;
+}
+
+.parallax-arrow path.a3 {
+  animation-delay: 0s;
+}
+
+.parallax-content {
+  position: relative;
+  margin: 0.5vh 0 1vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-inline: clamp(1rem, 3vw, 3rem);
+}
+
+@media (min-width: 481px) {
+  .parallax-content {
+    margin: 1vh 0 2vh;
+  }
+}
+
+/* ─── Each card ─── */
+.parallax-content__item {
+  --imgwidth: calc(var(--imgwidthmax) * 0.8);
+  width: 100%;
+  max-width: 100%;
+  position: relative;
+  margin-bottom: 8vh;
+  display: grid;
+  grid-template-columns: 1fr;
+  /* mobile: single column */
+  gap: 1.5rem;
+  perspective: 1200px;
+  transform-style: preserve-3d;
+}
+
+.parallax-content__item:last-child {
+  margin-bottom: 0;
+}
+
+@media (min-width: 481px) {
+  .parallax-content__item {
+    margin-bottom: 12vh;
+  }
+}
+
+@media (min-width: 769px) {
+  .parallax-content__item {
+    margin-bottom: 15vh;
+    grid-template-columns: 50% 50%;
+  }
+}
+
+/* ─── Expanded card (alternating layout) ─── */
+.parallax-content__item--expand {
+  width: 100%;
+  grid-template-columns: 1fr;
+  /* mobile: stacked */
+}
+
+@media (min-width: 769px) {
+  .parallax-content__item--expand {
+    grid-template-columns: minmax(0, var(--imgwidthmax)) 1fr;
+    max-width: min(100%, calc(var(--imgwidthmax) + 480px));
+    gap: 4rem;
+  }
+
+  .parallax-content__item--expand:nth-child(even) {
+    grid-template-columns: 1fr minmax(0, var(--imgwidthmax));
+    gap: 4rem;
+  }
+}
+
+/* ─── Image wrapper ─── */
+.parallax-content__item-imgwrap {
+  position: relative;
+  grid-area: auto;
+  /* mobile: auto flow */
+  overflow: hidden;
+  width: 85%;
+  margin-inline: auto;
+  aspect-ratio: 1 / 1;
+  border-radius: clamp(1rem, 3vw, 2rem);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.12);
+  transform-style: preserve-3d;
+  background: #f8fafc;
+}
+
+@media (min-width: 769px) {
+  .parallax-content__item-imgwrap {
+    grid-area: 1 / 1 / 3 / 2;
+    /* desktop: spans rows on left */
+    width: 100%;
+    margin: 0;
+    aspect-ratio: 1 / 1;
+    box-shadow: 0 50px 100px rgba(0, 0, 0, 0.15);
+  }
+
+  .parallax-content__item--expand:nth-child(even) .parallax-content__item-imgwrap {
+    grid-area: 1 / 2 / 3 / 3;
+    /* even: right side */
+  }
+}
+
+.parallax-content__item-img {
+  --parallax-overflow: 20px;
+  height: calc(100% + (2 * var(--parallax-overflow)));
+  top: calc(-1 * var(--parallax-overflow));
+  width: 100%;
+  position: absolute;
+  background-size: cover;
+  background-position: center;
+  transition: opacity 0.5s ease;
+  opacity: 0.9;
+}
+
+@media (min-width: 769px) {
+  .parallax-content__item-img {
+    --parallax-overflow: 20px;
+  }
+}
+
+/* ─── Description block ─── */
+.parallax-content__item-description {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 0;
+  width: 100%;
+}
+
+@media (min-width: 769px) {
+  .parallax-content__item-description {
+    grid-area: 1 / 2 / 3 / 3;
+    padding: 0 3rem;
+    width: clamp(200px, 100%, 400px);
+  }
+
+  .parallax-content__item--expand:nth-child(even) .parallax-content__item-description {
+    grid-area: 1 / 1 / 3 / 2;
+    padding: 0 3rem 0 0;
+    text-align: left;
+  }
+}
+
+/* ─── Card title ─── */
+.parallax-content__item-title {
+  position: relative;
+  font-size: clamp(2rem, 4vw, 6rem);
+  margin: 0 0 0.5rem;
+  line-height: 1;
+  font-family: var(--font-title);
+  font-weight: 700;
+  color: #0f172a;
+  z-index: 20;
+}
+
+/* ─── Price tag ─── */
+.parallax-price {
+  margin-top: 0.75rem;
+  font-weight: 800;
+  font-size: clamp(0.85rem, 1.5vw, 1rem);
+  color: var(--color-primary);
+}
+
+/* ─── Description text ─── */
+.description-text {
+  font-size: clamp(0.85rem, 1.2vw, 1.1rem);
+  font-weight: 500;
+  color: var(--color-description);
+  line-height: 1.7;
+  margin-top: 0.5rem;
+}
+
+/* ─── Benefits List ─── */
+.benefits-list {
+  list-style: none;
+  padding: 0;
+}
+
+.benefit-item {
+  display: flex;
+  align-items: center;
+  transition: all 0.3s ease;
+}
+
+.benefit-star-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.benefit-item:hover .benefit-star-wrapper {
+  transform: scale(1.3) rotate(15deg);
+}
+
+.benefit-star-svg {
+  color: #D97706; /* Fixed Gold Color */
+  fill: #D97706;
+  filter: drop-shadow(0 0 5px rgba(217, 119, 6, 0.6));
+  animation: star-glow 2.5s infinite alternate ease-in-out;
+}
+
+.benefit-text {
+  color: #333333; /* Deep Charcoal Gray */
+}
+
+/* Ensure consistent text color across all cards */
+.even .benefit-text {
+  color: #333333;
+}
+
+.benefit-item:hover .benefit-text {
+  filter: brightness(1.2);
+}
+
+@keyframes star-glow {
+  0% { filter: drop-shadow(0 0 3px rgba(217, 119, 6, 0.4)); opacity: 0.7; }
+  100% { filter: drop-shadow(0 0 10px rgba(217, 119, 6, 0.9)); opacity: 1; }
+}
+
+.benefit-item span {
+  transition: all 0.3s ease;
+}

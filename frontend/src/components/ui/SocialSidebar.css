@@ -1,0 +1,138 @@
+/* SocialSidebar.css */
+.social-sidebar-container {
+  position: fixed;
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 1000;
+  pointer-events: none;
+}
+
+ul.social-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 15px;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+  pointer-events: auto;
+}
+
+.social-list .icon-content {
+  position: relative;
+  pointer-events: auto;
+  opacity: 0;
+  transform: scale(0);
+}
+
+.social-list .icon-content .tooltip {
+  position: absolute;
+  top: 50%;
+  right: 100%;
+  margin-right: 40px;
+  transform: translateY(-50%);
+  color: #fff;
+  padding: 2px 4px;
+  border-radius: 4px;
+  opacity: 0;
+  visibility: hidden;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  white-space: nowrap;
+  text-transform: uppercase;
+  background: transparent;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+}
+
+.social-list .icon-content:hover .tooltip {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(-50%) translateX(0px);
+}
+
+.social-list .icon-content a {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  color: white;
+  background-color: #C9A24A; /* Default gold */
+  transition: all 0.3s ease-in-out;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  backdrop-filter: blur(4px);
+}
+
+.social-list .icon-content a:hover {
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+  transform: scale(1.05);
+}
+
+.social-list .icon-content a svg {
+  position: relative;
+  z-index: 1;
+  width: 24px;
+  height: 24px;
+  transition: transform 0.3s ease;
+}
+
+.social-list .icon-content a:hover svg {
+  transform: scale(1.1);
+}
+
+/* Branded Colors applied directly to link backgrounds */
+.social-list .icon-content a[data-social="whatsapp"],
+.social-list .icon-content a[data-social="whatsapp"] ~ .tooltip {
+  color: #25D366;
+}
+.social-list .icon-content a[data-social="whatsapp"] {
+  background-color: #25D366;
+  color: white;
+}
+
+.social-list .icon-content a[data-social="instagram"] {
+  background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%);
+  color: white;
+}
+.social-list .icon-content a[data-social="instagram"] ~ .tooltip {
+  color: #E4405F;
+}
+
+.social-list .icon-content a[data-social="facebook"] {
+  background-color: #1877F2;
+  color: white;
+}
+.social-list .icon-content a[data-social="facebook"] ~ .tooltip {
+  color: #1877F2;
+}
+
+.social-list .icon-content a[data-social="call"] {
+  background-color: #C9A24A;
+  color: white;
+}
+.social-list .icon-content a[data-social="call"] ~ .tooltip {
+  color: #C9A24A;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+  .social-sidebar-container {
+    display: none;
+  }
+  
+  .social-list .icon-content a {
+    width: 40px;
+    height: 40px;
+  }
+  
+  .social-list .icon-content .tooltip {
+    display: none; /* Hide tooltips on mobile touch */
+  }
+}

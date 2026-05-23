@@ -7,22 +7,15 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-# Frontend Ignore
-frontend/node_modules/
-frontend/dist/
-frontend/dist-ssr/
-frontend/*.local
-
-# Backend Ignore
-backend/target/
-backend/.mvn/
-backend/*.jar
-backend/*.war
+node_modules
+dist
+dist-ssr
+*.local
 
 # Editor directories and files
-.vscode/
+.vscode/*
 !.vscode/extensions.json
-.idea/
+.idea
 .DS_Store
 *.suo
 *.ntvs*
