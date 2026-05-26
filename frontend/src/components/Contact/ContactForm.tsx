@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import { Send, Sparkles } from "lucide-react";
 
@@ -14,6 +14,20 @@ const ContactForm: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setIsDropdownOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -130,7 +144,7 @@ const ContactForm: React.FC = () => {
             </div>
             <div className="space-y-2 tb:space-y-3">
               <label className="text-[9px] tb:text-[10px] uppercase tracking-[0.3em] font-black text-on-surface/60 block px-3 tb:px-4">Service Interested</label>
-              <div className="relative w-full">
+              <div ref={dropdownRef} className="relative w-full">
                 <button
                   type="button"
                   onClick={() => setIsDropdownOpen(!isDropdownOpen)}
@@ -146,48 +160,53 @@ const ContactForm: React.FC = () => {
                 <input type="hidden" name="service" value={formState.service} required />
 
                 {isDropdownOpen && (
-                  <>
-                    {/* Backdrop to close when clicking outside */}
-                    <div className="fixed inset-0 z-40" onClick={() => setIsDropdownOpen(false)} />
-                    
-                    <motion.ul
-                      initial={{ opacity: 0, y: -10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      className="absolute left-0 right-0 mt-2 bg-white/95 backdrop-blur-md border border-on-surface/10 rounded-2xl shadow-2xl z-50 py-2 max-h-60 overflow-y-auto"
+                  <motion.ul
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="absolute left-0 right-0 mt-2 bg-white/95 backdrop-blur-md border border-on-surface/10 rounded-2xl shadow-2xl z-50 py-2 max-h-60 overflow-y-auto scrollbar-thin scrollbar-thumb-primary/20 scrollbar-track-transparent"
+                    style={{ WebkitOverflowScrolling: "touch" }}
+                  >
+                    <li
+                      onClick={() => {
+                        setFormState({ ...formState, service: "" });
+                        setIsDropdownOpen(false);
+                      }}
+                      className="px-5 py-3 hover:bg-primary/10 text-on-surface/40 font-bold text-sm cursor-pointer transition-colors"
                     >
+                      Select a service
+                    </li>
+                    {[
+                      "Hair Spa",
+                      "Facial",
+                      "Skin Care",
+                      "Hair Styling",
+                      "Nails",
+                      "Manicure",
+                      "Pedicure",
+                      "Lice Treatment",
+                      "Bridal Makeup"
+                    ].map((service) => (
                       <li
+                        key={service}
                         onClick={() => {
-                          setFormState({ ...formState, service: "" });
+                          setFormState({ ...formState, service: service });
                           setIsDropdownOpen(false);
                         }}
-                        className="px-5 py-3 hover:bg-primary/10 text-on-surface/40 font-bold text-sm cursor-pointer transition-colors"
+                        className={`px-5 py-3 font-bold text-sm cursor-pointer transition-colors flex items-center justify-between ${
+                          formState.service === service 
+                            ? "bg-primary text-white hover:bg-primary/90" 
+                            : "text-on-surface hover:bg-primary/10 hover:text-primary"
+                        }`}
                       >
-                        Select a service
+                        <span>{service}</span>
+                        {formState.service === service && (
+                          <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" strokeWidth="3" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                          </svg>
+                        )}
                       </li>
-                      {[
-                        "Hair Spa",
-                        "Facial",
-                        "Skin Care",
-                        "Hair Styling",
-                        "Nails",
-                        "Manicure",
-                        "Pedicure",
-                        "Lice Treatment",
-                        "Bridal Makeup"
-                      ].map((service) => (
-                        <li
-                          key={service}
-                          onClick={() => {
-                            setFormState({ ...formState, service: service });
-                            setIsDropdownOpen(false);
-                          }}
-                          className={`px-5 py-3 hover:bg-primary/10 hover:text-primary font-bold text-sm cursor-pointer transition-colors ${formState.service === service ? "text-primary bg-primary/5" : "text-on-surface"}`}
-                        >
-                          {service}
-                        </li>
-                      ))}
-                    </motion.ul>
-                  </>
+                    ))}
+                  </motion.ul>
                 )}
               </div>
             </div>
