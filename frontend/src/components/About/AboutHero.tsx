@@ -31,10 +31,14 @@ const AboutHero: React.FC = () => {
 
   const handleScroll = (e: React.MouseEvent) => {
     e.preventDefault();
+    e.stopPropagation();
+    if (e.nativeEvent) {
+      e.nativeEvent.stopImmediatePropagation();
+    }
     const element = document.querySelector("#our-journey");
     if (element instanceof HTMLElement) {
       if (window.lenisInstance) {
-        window.lenisInstance.scrollTo(element, { offset: 220, duration: 1.5 });
+        window.lenisInstance.scrollTo(element, { offset: 180, duration: 1.5 });
       } else {
         element.scrollIntoView({ behavior: "smooth" });
       }
