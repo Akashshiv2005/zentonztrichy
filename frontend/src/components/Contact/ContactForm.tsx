@@ -93,7 +93,7 @@ const ContactForm: React.FC = () => {
 
         <form onSubmit={handleSubmit} className="space-y-6 tb:space-y-8">
           {/* Name & Email */}
-          <div className="grid grid-cols-1 mb:grid-cols-2 gap-6 tb:gap-8">
+          <div className="grid grid-cols-1 tb:grid-cols-2 gap-6 tb:gap-8">
             <div className="space-y-2 tb:space-y-3">
               <label className="text-[9px] tb:text-[10px] uppercase tracking-[0.3em] font-black text-on-surface/60 block px-3 tb:px-4">Full Name</label>
               <input type="text" required
@@ -114,7 +114,7 @@ const ContactForm: React.FC = () => {
           </div>
 
           {/* Phone & Service */}
-          <div className="grid grid-cols-1 mb:grid-cols-2 gap-6 tb:gap-8">
+          <div className="grid grid-cols-1 tb:grid-cols-2 gap-6 tb:gap-8">
             <div className="space-y-2 tb:space-y-3">
               <label className="text-[9px] tb:text-[10px] uppercase tracking-[0.3em] font-black text-on-surface/60 block px-3 tb:px-4">Phone Number</label>
               <input type="tel" required
