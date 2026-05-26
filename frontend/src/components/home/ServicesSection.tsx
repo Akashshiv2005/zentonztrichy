@@ -87,7 +87,7 @@ export function ServicesSection() {
       <div className="max-w-7xl mx-auto px-4 tb:px-6 dt:px-8 relative z-10">
         <ScrollReveal>
           <div className="text-center mb-10 tb:mb-16 dt:mb-20">
-            <h2 className="text-section-title font-black text-on-surface mb-4 tb:mb-6 uppercase tracking-wide font-serif">
+            <h2 className="text-section-title font-black text-on-surface mb-4 tb:mb-6 uppercase font-serif">
               <span className="underline decoration-primary/30 underline-offset-8">
                 What <span className="text-primary">We Offer</span>
               </span>
