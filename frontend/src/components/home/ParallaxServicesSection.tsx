@@ -9,7 +9,7 @@ import manicureImage from "../../assets/pedicurewebpimages/manicure1.webp";
 import hairSpaImage from "../../assets/hairspawebpimages/hairspa3.webp";
 import bridalImage from "../../assets/bridalwebpimages/bridal1.webp";
 import nailImage from "../../assets/nailwebpimages/nail.jpeg";
-import liceImage from "../../assets/licewebpimages/lice4.webp";
+import liceImage from "../../assets/licewebpimages/lice1.webp";
 import hairStyleImage from "../../assets/hairwebp images/curlyhairstyle.webp";
 import wartRemovalImage from "../../assets/wartremovalwebpimages/wartdarkimg1.webp";
 import earPiercingImage from "../../assets/earpiercingimages/earpiercing.webp";
@@ -89,7 +89,7 @@ const parallaxServicesFallback: ParallaxService[] = [
     color: "#34D399",
   },
   {
-    title: "Lice Removal",
+    title: "Lice Treatment",
     description: "Gentle and effective treatments to ensure a healthy, lice-free scalp.",
     image: liceImage,
     price: "₹4,999",

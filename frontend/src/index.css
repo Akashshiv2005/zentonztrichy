@@ -24,6 +24,10 @@
   --shadow-luxury-gold: var(--shadow-luxury-gold);
 }
 
+html {
+  scrollbar-gutter: stable;
+}
+
 /* ─── Standard CSS Custom Properties ─── */
 :root {
   /* Fonts */

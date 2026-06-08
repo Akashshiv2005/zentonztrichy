@@ -311,77 +311,84 @@ const Admin: React.FC = () => {
         </div>
       </div>
 
-      <div className="bg-on-surface/[0.02] border border-white/5 rounded-[2rem] overflow-hidden shadow-luxury-deep">
-        {activeTab === 'bookings' && (
-          <div className="overflow-x-auto">
-            <table className="w-full text-left">
-              <thead>
-                <tr className="bg-on-surface/5 border-b border-white/5">
-                  <th className="px-6 py-5 text-[10px] font-black uppercase tracking-widest text-primary">Customer</th>
-                  <th className="px-6 py-5 text-[10px] font-black uppercase tracking-widest text-primary">Ritual</th>
-                  <th className="px-6 py-5 text-[10px] font-black uppercase tracking-widest text-primary">Schedule</th>
-                  <th className="px-6 py-5 text-[10px] font-black uppercase tracking-widest text-primary">Notes</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-white/5">
-                {bookings.map((booking) => (
-                  <tr key={booking.id} className="hover:bg-on-surface/[0.02] transition-colors">
-                    <td className="px-6 py-6">
-                      <div className="font-bold text-on-surface">{booking.name}</div>
-                      <div className="text-xs text-on-surface/50 flex items-center gap-1 mt-1">
-                        <Phone size={12} className="text-primary" /> {booking.phone}
-                      </div>
-                    </td>
-                    <td className="px-6 py-6">
-                      <span className="bg-primary/10 text-primary px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider">
-                        {booking.service}
-                      </span>
-                    </td>
-                    <td className="px-6 py-6">
-                      <div className="text-sm font-medium text-on-surface flex items-center gap-2">
-                        <Calendar size={14} className="text-primary" /> {booking.date}
-                      </div>
-                      <div className="text-xs text-on-surface/50 flex items-center gap-2 mt-1">
-                        <Clock size={14} className="text-primary" /> {booking.time}
-                      </div>
-                    </td>
-                    <td className="px-6 py-6">
-                      <p className="text-sm text-on-surface/60 max-w-xs line-clamp-2">{booking.notes || '—'}</p>
-                    </td>
-                  </tr>
-                ))}
-                {bookings.length === 0 && !loading && (
-                  <tr>
-                    <td colSpan={4} className="px-6 py-20 text-center text-on-surface/30 font-medium">No bookings found yet.</td>
-                  </tr>
-                )}
-              </tbody>
-            </table>
-          </div>
-        )}
-        {activeTab === 'stories' && (
-          <AdminTestimonials />
-        )}
+      <div className="bg-on-surface/[0.02] border border-white/5 rounded-[2rem] overflow-hidden shadow-luxury-deep relative min-h-[400px]">
+        <AnimatePresence mode="popLayout">
+          <motion.div
+            key={activeTab}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.2, ease: "easeInOut" }}
+            className="w-full"
+          >
+            {activeTab === 'bookings' && (
+              <div className="overflow-x-auto">
+                <table className="w-full text-left">
+                  <thead>
+                    <tr className="bg-on-surface/5 border-b border-white/5">
+                      <th className="px-6 py-5 text-[10px] font-black uppercase tracking-widest text-primary">Customer</th>
+                      <th className="px-6 py-5 text-[10px] font-black uppercase tracking-widest text-primary">Ritual</th>
+                      <th className="px-6 py-5 text-[10px] font-black uppercase tracking-widest text-primary">Schedule</th>
+                      <th className="px-6 py-5 text-[10px] font-black uppercase tracking-widest text-primary">Notes</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-white/5">
+                    {bookings.map((booking) => (
+                      <tr key={booking.id} className="hover:bg-on-surface/[0.02] transition-colors">
+                        <td className="px-6 py-6">
+                          <div className="font-bold text-on-surface">{booking.name}</div>
+                          <div className="text-xs text-on-surface/50 flex items-center gap-1 mt-1">
+                            <Phone size={12} className="text-primary" /> {booking.phone}
+                          </div>
+                        </td>
+                        <td className="px-6 py-6">
+                          <span className="bg-primary/10 text-primary px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider">
+                            {booking.service}
+                          </span>
+                        </td>
+                        <td className="px-6 py-6">
+                          <div className="text-sm font-medium text-on-surface flex items-center gap-2">
+                            <Calendar size={14} className="text-primary" /> {booking.date}
+                          </div>
+                          <div className="text-xs text-on-surface/50 flex items-center gap-2 mt-1">
+                            <Clock size={14} className="text-primary" /> {booking.time}
+                          </div>
+                        </td>
+                        <td className="px-6 py-6">
+                          <p className="text-sm text-on-surface/60 max-w-xs line-clamp-2">{booking.notes || '—'}</p>
+                        </td>
+                      </tr>
+                    ))}
+                    {bookings.length === 0 && !loading && (
+                      <tr>
+                        <td colSpan={4} className="px-6 py-20 text-center text-on-surface/30 font-medium">No bookings found yet.</td>
+                      </tr>
+                    )}
+                  </tbody>
+                </table>
+              </div>
+            )}
+            {activeTab === 'stories' && (
+              <AdminTestimonials />
+            )}
 
-        {activeTab === 'services' && (
-          <AdminServices />
-        )}
+            {activeTab === 'services' && (
+              <AdminServices />
+            )}
 
-        {activeTab === 'gallery' && (
-          <div className="bg-on-surface/5 rounded-3xl overflow-hidden border border-white/10 shadow-2xl">
-            <AdminGallery />
-          </div>
-        )}
+            {activeTab === 'gallery' && (
+              <AdminGallery />
+            )}
 
-        {activeTab === 'magazine' && (
-          <div className="bg-on-surface/5 rounded-3xl overflow-hidden border border-white/10 shadow-2xl">
-            <AdminMagazine />
-          </div>
-        )}
+            {activeTab === 'magazine' && (
+              <AdminMagazine />
+            )}
 
-        {activeTab === 'promotions' && (
-          <AdminPromotions />
-        )}
+            {activeTab === 'promotions' && (
+              <AdminPromotions />
+            )}
+          </motion.div>
+        </AnimatePresence>
       </div>
       </div>
 

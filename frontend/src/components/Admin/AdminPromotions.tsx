@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Plus, Trash2, Edit2, Check, X, Image as ImageIcon, Gift } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import ConfirmModal from '../ui/ConfirmModal';
+import { AdminToast } from '../ui/AdminToast';
 
 interface Promotion {
   id: number;
@@ -67,10 +68,20 @@ const mapToSnake = (data: any) => ({
   image_name: data.imageName,
 });
 
-const LoadedImage = ({ src, alt, className }: { src: string, alt: string, className: string }) => {
+const LoadedImage = ({ 
+  src, 
+  alt, 
+  className, 
+  wrapperClassName = "w-full h-full" 
+}: { 
+  src: string; 
+  alt: string; 
+  className: string; 
+  wrapperClassName?: string; 
+}) => {
   const [loaded, setLoaded] = useState(false);
   return (
-    <div className="relative w-full h-full overflow-hidden">
+    <div className={`relative overflow-hidden ${wrapperClassName}`}>
       {!loaded && (
         <div className="absolute inset-0 bg-surface-light animate-pulse flex items-center justify-center">
            <span className="text-xs text-on-surface/30 font-bold uppercase tracking-widest">Loading Media...</span>
@@ -87,6 +98,7 @@ const LoadedImage = ({ src, alt, className }: { src: string, alt: string, classN
   );
 };
 
+
 const AdminPromotions: React.FC = () => {
   const [promotions, setPromotions] = useState<Promotion[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -97,6 +109,15 @@ const AdminPromotions: React.FC = () => {
   const [currentPromo, setCurrentPromo] = useState<Partial<Promotion>>({});
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [isUploading, setIsUploading] = useState(false);
+  const [toast, setToast] = useState<{ message: string; type: 'success' | 'error'; isOpen: boolean }>({
+    message: '',
+    type: 'success',
+    isOpen: false
+  });
+
+  const showToast = (message: string, type: 'success' | 'error' = 'success') => {
+    setToast({ message, type, isOpen: true });
+  };
 
   useEffect(() => {
     fetchPromotions();
@@ -154,8 +175,9 @@ const AdminPromotions: React.FC = () => {
       if (!response.ok) throw new Error("Failed to delete");
       setItemToDelete(null);
       fetchPromotions();
+      showToast("Offer deleted successfully!");
     } catch (err: any) {
-      alert(err.message);
+      showToast(err.message, "error");
     }
   };
 
@@ -173,8 +195,9 @@ const AdminPromotions: React.FC = () => {
       });
       if (!response.ok) throw new Error("Failed to update status");
       fetchPromotions();
+      showToast("Offer status updated successfully!");
     } catch (err: any) {
-      alert(err.message);
+      showToast(err.message, "error");
     }
   };
 
@@ -211,8 +234,9 @@ const AdminPromotions: React.FC = () => {
       
       setIsEditing(false);
       fetchPromotions();
+      showToast(promoToSave.id ? "Offer updated successfully!" : "New offer created successfully!");
     } catch (err: any) {
-      alert(err.message);
+      showToast(err.message, "error");
     } finally {
       setIsUploading(false);
     }
@@ -273,26 +297,28 @@ const AdminPromotions: React.FC = () => {
                   />
                   
                   {/* Image Preview */}
-                  <div className="mt-4">
+                  <div className="mt-4 flex justify-center">
                     {selectedFile ? (
-                      <div className="relative inline-block w-full">
+                      <div className="relative inline-block">
                         <LoadedImage 
                           src={URL.createObjectURL(selectedFile)} 
                           alt="New preview" 
-                          className="h-32 w-full rounded-xl object-cover border border-white/10 shadow-sm"
+                          wrapperClassName="inline-block"
+                          className="max-h-64 md:max-h-80 w-auto rounded-xl object-contain border border-on-surface/10 bg-on-surface/5 shadow-md block"
                         />
                         <span className="absolute -top-2 -right-2 bg-primary text-on-primary text-[10px] font-bold px-2 py-1 rounded-full shadow-md z-10">
                           NEW
                         </span>
                       </div>
                     ) : currentPromo.imageName ? (
-                      <div className="relative inline-block w-full">
+                      <div className="relative inline-block">
                         <LoadedImage 
                           src={`${GALLERY_IMAGE_URL}/${currentPromo.imageName.replace(/"/g, '')}`} 
                           alt="Current image" 
-                          className="h-32 w-full rounded-xl object-cover border border-white/10 shadow-sm"
+                          wrapperClassName="inline-block"
+                          className="max-h-64 md:max-h-80 w-auto rounded-xl object-contain border border-on-surface/10 bg-on-surface/5 shadow-md block"
                         />
-                        <p className="text-xs text-on-surface/50 mt-2">Current image will be kept if no new file is selected.</p>
+                        <p className="text-xs text-on-surface/50 mt-2 text-center">Current image will be kept if no new file is selected.</p>
                       </div>
                     ) : null}
                   </div>
@@ -388,6 +414,13 @@ const AdminPromotions: React.FC = () => {
           }
         }}
         onCancel={() => setItemToDelete(null)}
+      />
+
+      <AdminToast
+        message={toast.message}
+        type={toast.type}
+        isOpen={toast.isOpen}
+        onClose={() => setToast(prev => ({ ...prev, isOpen: false }))}
       />
     </div>
   );

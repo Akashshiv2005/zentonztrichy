@@ -189,9 +189,49 @@ const TestimonialCard: React.FC<{ testimonial: Testimonial; delay: number }> = (
   testimonial,
   delay,
 }) => {
-  const imageUrl = testimonial.imageName 
-    ? `http://localhost:8081/api/gallery/images/${testimonial.imageName}` 
-    : (testimonial.image || `https://api.dicebear.com/7.x/lorelei/svg?seed=${testimonial.name.split(' ')[0]}`);
+  // Heuristic to guess gender based on common Indian/English name patterns
+  const guessGender = (name: string) => {
+    const n = name.split(' ')[0].toLowerCase();
+    // Known overrides
+    if (['senthil', 'joe', 'vicky', 'sarthaj'].includes(n)) return 'male';
+    if (['jenifer'].includes(n)) return 'female';
+
+    // Ends with typical feminine vowels in Indian names
+    if (n.endsWith('a') || n.endsWith('i') || n.endsWith('y') || n.endsWith('u') || n.endsWith('e')) return 'female';
+    return 'male';
+  };
+
+  // We measured the SVG complexity of all 48 lorelei hair variants. 
+  // Smallest SVGs = shortest hair/bald. Largest SVGs = longest/most complex hair.
+  const maleHairOptions = ["variant34", "variant25", "variant01", "variant07", "variant12", "variant43", "variant04", "variant28", "variant47", "variant08"];
+  const femaleHairOptions = ["variant30", "variant29", "variant41", "variant45", "variant37", "variant35", "variant18", "variant21", "variant20", "variant42"];
+
+  const getAvatarHash = (name: string) => {
+    let hash = 0;
+    for (let i = 0; i < name.length; i++) {
+      hash = name.charCodeAt(i) + ((hash << 5) - hash);
+    }
+    return Math.abs(hash);
+  };
+  
+  const gender = guessGender(testimonial.name);
+  const seed = testimonial.name.split(' ')[0];
+  
+  const hair = gender === 'male' 
+    ? maleHairOptions[getAvatarHash(testimonial.name) % maleHairOptions.length]
+    : femaleHairOptions[getAvatarHash(testimonial.name) % femaleHairOptions.length];
+
+  const fallbackAvatar = gender === 'male'
+    ? `https://api.dicebear.com/7.x/lorelei/svg?seed=${seed}&hair=${hair}&beardProbability=40`
+    : `https://api.dicebear.com/7.x/lorelei/svg?seed=${seed}&hair=${hair}&beardProbability=0`;
+
+  // We consider both 'dicebear' and our new fallback as valid SVG avatars
+  const isBrokenAvatar = testimonial.image?.includes('avatar.iran.li') || testimonial.image?.includes('xsgames');
+  const isDicebear = testimonial.image?.includes('dicebear');
+
+  const imageUrl = testimonial.imageName
+    ? `http://localhost:8081/api/gallery/images/${testimonial.imageName}`
+    : ((testimonial.image && !isDicebear && !isBrokenAvatar) ? testimonial.image : fallbackAvatar);
 
   return (
     <motion.div
@@ -266,8 +306,10 @@ const AboutTestimonials: React.FC = () => {
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
-  const row1 = testimonials.slice(0, Math.ceil(testimonials.length / 2));
-  const row2 = testimonials.slice(Math.ceil(testimonials.length / 2));
+  // Reverse the array so the newest testimonials appear first
+  const reversedTestimonials = [...testimonials].reverse();
+  const row1 = reversedTestimonials.slice(0, Math.ceil(reversedTestimonials.length / 2));
+  const row2 = reversedTestimonials.slice(Math.ceil(reversedTestimonials.length / 2));
 
   return (
     <section className="py-20 sm:py-32 bg-surface-dim relative overflow-hidden">
@@ -319,7 +361,7 @@ const AboutTestimonials: React.FC = () => {
       </div>
 
       <div className="grid grid-cols-1 md:hidden gap-6 mt-8">
-        {testimonials.slice(0, 4).map((testimonial, idx) => (
+        {reversedTestimonials.slice(0, 4).map((testimonial, idx) => (
           <TestimonialCard
             key={`mobile-${testimonial.id}`}
             testimonial={testimonial}

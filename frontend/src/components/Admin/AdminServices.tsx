@@ -3,6 +3,7 @@ import { Trash2, Save, X, Check, Plus } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { defaultServices } from '../../data/defaultServices';
 import ConfirmModal from '../ui/ConfirmModal';
+import { AdminToast } from '../ui/AdminToast';
 
 interface Service {
   id: number;
@@ -150,11 +151,11 @@ const AdminServices: React.FC = () => {
   const resetForm = () => {
     setCurrentService({
       title: '',
-      category: activeCategory === "All Services" ? "" : activeCategory,
-      description: '',
+      category: 'General',
+      description: 'Nourishing and premium salon services tailored for you.',
       price: '',
-      duration: '',
-      highlights: '',
+      duration: '45 - 60 Mins',
+      highlights: 'Premium Care, Professional Styling',
     });
     setIsEditing(false);
     setSelectedFile(null);
@@ -165,52 +166,21 @@ const AdminServices: React.FC = () => {
     setShowForm(true);
   };
 
-  const filteredServices = activeCategory === "All Services" 
-    ? services 
-    : services.filter(s => s.category === activeCategory);
+  const filteredServices = services;
 
   return (
-    <div className="flex flex-col lg:flex-row gap-8 relative">
-      <AnimatePresence>
-        {toastMessage && (
-          <motion.div
-            initial={{ opacity: 0, y: -20, scale: 0.95 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: -20, scale: 0.95 }}
-            className="fixed top-24 right-8 bg-[#1A1A1A] border border-primary/20 text-primary px-6 py-4 rounded-xl shadow-[0_0_40px_rgba(212,175,55,0.15)] flex items-center gap-3 z-[100] font-bold tracking-wider text-sm backdrop-blur-xl"
-          >
-            <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center">
-              <Check size={16} className="text-primary" />
-            </div>
-            {toastMessage}
-          </motion.div>
-        )}
-      </AnimatePresence>
+    <div className="w-full relative p-6 md:p-8">
+      <AdminToast
+        message={toastMessage || ''}
+        isOpen={!!toastMessage}
+        onClose={() => setToastMessage('')}
+      />
 
-      <div className="w-full lg:w-64 shrink-0 space-y-2">
-        <h3 className="text-xs font-black uppercase tracking-widest text-primary mb-4 px-4">Service Categories</h3>
-        <div className="bg-surface rounded-3xl p-2 shadow-luxury border border-on-surface/5 flex flex-col gap-1">
-          {CATEGORIES.map(category => (
-            <button
-              key={category}
-              onClick={() => handleCategoryClick(category)}
-              className={`text-left px-4 py-3 rounded-2xl text-sm font-bold transition-all ${
-                activeCategory === category
-                  ? 'bg-primary text-background shadow-md'
-                  : 'text-on-surface/60 hover:bg-on-surface/5 hover:text-on-surface'
-              }`}
-            >
-              {category}
-            </button>
-          ))}
-        </div>
-      </div>
-
-      <div className="flex-1 space-y-8">
+      <div className="space-y-8">
         <div className="flex justify-between items-center bg-surface-dim/30 p-6 rounded-2xl border border-white/5">
           <div>
-            <h2 className="text-xl font-bold text-on-surface">Manage {activeCategory}</h2>
-            <p className="text-sm text-on-surface/60 mt-1">Select a service to edit or add a new one.</p>
+            <h2 className="text-xl font-bold text-on-surface">Manage Services</h2>
+            <p className="text-sm text-on-surface/60 mt-1">Add, update or delete services offered in your salon.</p>
           </div>
           {!showForm && (
             <button onClick={handleAddNew} className="btn-premium flex items-center gap-2 text-sm px-4 py-2">
@@ -231,7 +201,6 @@ const AdminServices: React.FC = () => {
               <div className="flex items-center justify-between mb-6">
                 <h2 className="text-lg font-bold text-primary flex items-center gap-2">
                   {isEditing ? 'Edit Service' : 'Add New Service'}
-                  <span className="text-primary text-xs bg-primary/10 px-2 py-1 rounded-full font-sans uppercase tracking-widest">{activeCategory}</span>
                 </h2>
                 <button type="button" onClick={() => setShowForm(false)} className="p-2 text-on-surface/50 hover:text-white bg-surface rounded-full hover:bg-white/10 transition-colors">
                   <X size={18} />
@@ -251,7 +220,9 @@ const AdminServices: React.FC = () => {
                   placeholder="e.g. Signature Bridal Makeup"
                 />
               </div>
-              
+            </div>
+
+            <div className="space-y-4">
               <div>
                 <label className="block text-xs font-bold text-on-surface/60 uppercase tracking-wider mb-2">Price</label>
                 <input 
@@ -260,12 +231,10 @@ const AdminServices: React.FC = () => {
                   value={currentService.price || ''}
                   onChange={e => setCurrentService({...currentService, price: e.target.value})}
                   className="w-full bg-background border border-on-surface/10 rounded-xl px-4 py-3 text-on-surface focus:outline-none focus:border-primary"
-                  placeholder="e.g. Rs. 5000"
+                  placeholder="e.g. ₹599+"
                 />
               </div>
             </div>
-
-            {/* Hidden extra fields */}
 
 
             <div className="md:col-span-2 pt-4 flex gap-4">
@@ -292,8 +261,8 @@ const AdminServices: React.FC = () => {
         {/* Existing Services List */}
         {filteredServices.length > 0 && (
           <div className="space-y-4">
-            <h3 className="text-xs font-black uppercase tracking-widest text-primary mb-4 px-2">Manage {activeCategory} Services</h3>
-            <div className="grid grid-cols-1 gap-4">
+            <h3 className="text-xs font-black uppercase tracking-widest text-primary mb-4 px-2">All Services</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {filteredServices.map(service => (
                 <div key={service.id} className="bg-surface rounded-2xl p-4 border border-white/5 flex items-center justify-between hover:border-primary/30 transition-colors group">
                   <div className="flex-1">

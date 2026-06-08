@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Save, X, Edit2, Trash2, Image as ImageIcon, Star } from 'lucide-react';
 import ConfirmModal from '../ui/ConfirmModal';
+import { AdminToast } from '../ui/AdminToast';
 
 interface Testimonial {
   id: number;
@@ -23,6 +24,15 @@ const AdminTestimonials: React.FC = () => {
     rating: 5,
   });
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [toast, setToast] = useState<{ message: string; type: 'success' | 'error'; isOpen: boolean }>({
+    message: '',
+    type: 'success',
+    isOpen: false
+  });
+
+  const showToast = (message: string, type: 'success' | 'error' = 'success') => {
+    setToast({ message, type, isOpen: true });
+  };
 
   const fetchTestimonials = async () => {
     try {
@@ -63,10 +73,10 @@ const AdminTestimonials: React.FC = () => {
       if (res.ok) {
         resetForm();
         fetchTestimonials();
-        alert(isEditing ? "Client story updated successfully!" : "New client story added successfully!");
+        showToast(isEditing ? "Client story updated successfully!" : "New client story added successfully!");
       } else {
         console.error("Failed to save testimonial");
-        alert("Failed to save client story. Please try again.");
+        showToast("Failed to save client story. Please try again.", "error");
       }
     } catch (err) {
       console.error("Error saving testimonial", err);
@@ -255,6 +265,13 @@ const AdminTestimonials: React.FC = () => {
           }
         }}
         onCancel={() => setItemToDelete(null)}
+      />
+
+      <AdminToast
+        message={toast.message}
+        type={toast.type}
+        isOpen={toast.isOpen}
+        onClose={() => setToast(prev => ({ ...prev, isOpen: false }))}
       />
     </div>
   );

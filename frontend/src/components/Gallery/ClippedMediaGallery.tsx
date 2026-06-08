@@ -36,7 +36,7 @@ const ClippedMediaGallery: React.FC = () => {
             url: `http://localhost:8081/api/gallery/images/${img.file_name}`,
             span: predefinedSpans[index % predefinedSpans.length],
             objectPosition: "center",
-            objectFit: "contain"
+            objectFit: "cover"
           }));
           
           setItems(dynamicItems); 
