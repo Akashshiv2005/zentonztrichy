@@ -5,6 +5,7 @@ from sqlalchemy.orm import sessionmaker
 # pyrefly: ignore [missing-import]
 from sqlalchemy.ext.declarative import declarative_base
 import os
+# pyrefly: ignore [missing-import]
 from dotenv import load_dotenv
 
 # Load env variables

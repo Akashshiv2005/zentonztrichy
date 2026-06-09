@@ -4,6 +4,7 @@ from minio import Minio
 from fastapi import UploadFile
 import uuid
 import logging
+# pyrefly: ignore [missing-import]
 from dotenv import load_dotenv
 
 # Load env variables
