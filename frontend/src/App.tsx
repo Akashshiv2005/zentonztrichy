@@ -4,6 +4,7 @@ import {
   Routes,
   Route,
   useLocation,
+  Navigate,
 } from "react-router-dom";
 import { useEffect, useLayoutEffect } from "react";
 import Lenis from "lenis";
@@ -102,6 +103,7 @@ const App: React.FC = () => {
               <Route path="/book" element={<Book />} />
               <Route path="/membership" element={<Membership />} />
               <Route path="/admin" element={<Admin />} />
+              <Route path="*" element={<Navigate to="/" replace />} />
             </Routes>
         </main>
         
