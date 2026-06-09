@@ -24,10 +24,22 @@ const Book: React.FC = () => {
               { step: "02", title: "Pick Your Slot", desc: "Find a time that fits your schedule perfectly." },
               { step: "03", title: "Relax & Prepare", desc: "We'll take care of the rest of the journey." }
             ].map((s, idx) => (
-              <div key={idx} className="p-8 bg-white rounded-3xl border border-primary/20 shadow-sm text-left">
-                <span className="text-4xl font-black text-primary/60 block mb-4 font-serif">{s.step}</span>
-                <h3 className="text-xl font-black text-on-surface uppercase font-serif mb-2">{s.title}</h3>
-                <p className="text-on-surface/90 text-sm font-medium">{s.desc}</p>
+              <div 
+                key={idx} 
+                className="group p-8 bg-white/80 backdrop-blur-md rounded-[2rem] border border-[#C9A24A]/20 shadow-luxury-soft text-left hover:border-[#C9A24A]/60 hover:shadow-luxury-gold transition-all duration-500 hover:-translate-y-1 relative overflow-hidden"
+              >
+                {/* Decorative background glow on hover */}
+                <div className="absolute -right-8 -top-8 w-24 h-24 bg-[#C9A24A]/5 rounded-full blur-xl group-hover:bg-[#C9A24A]/10 transition-all duration-500" />
+                
+                <span className="text-5xl font-black bg-gradient-to-br from-[#C9A24A] to-[#B8860B] bg-clip-text text-transparent block mb-4 font-serif transition-transform duration-500 group-hover:scale-110 origin-left">
+                  {s.step}
+                </span>
+                <h3 className="text-xl font-black text-on-surface uppercase font-serif mb-2 tracking-tight group-hover:text-[#C9A24A] transition-colors duration-300">
+                  {s.title}
+                </h3>
+                <p className="text-on-surface/70 text-sm font-medium leading-relaxed">
+                  {s.desc}
+                </p>
               </div>
             ))}
           </div>
