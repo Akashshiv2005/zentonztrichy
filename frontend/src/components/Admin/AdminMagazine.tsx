@@ -198,7 +198,7 @@ export function AdminMagazine() {
                 <img 
                   src={`http://localhost:8081/api/gallery/images/${img.file_name}`} 
                   alt={img.file_name}
-                  className="absolute inset-0 w-full h-full object-contain sm:object-cover transition-transform duration-500 group-hover:scale-110"
+                  className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                 />
               </div>
               <div className="bg-background/80 backdrop-blur p-4 border-t border-white/10 flex flex-col justify-between flex-1">
