@@ -242,34 +242,34 @@ const Admin: React.FC = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-10 h-20 sm:h-24 flex items-center justify-between">
           <div className="flex items-center gap-3 sm:gap-6">
             {/* Clickable Logo with White Background for Visibility */}
-            <Link to="/" className="h-10 sm:h-12 w-auto bg-white/95 px-2 py-1.5 rounded-lg hover:scale-105 transition-transform duration-500 shadow-md">
+            <Link to="/" className="h-8 sm:h-12 w-auto bg-white/95 px-2 py-1 rounded-lg hover:scale-105 transition-transform duration-500 shadow-md">
               <img src={logo} alt="ZenTonez Logo" className="h-full w-auto object-contain" />
             </Link>
             
-            <div className="w-px h-6 sm:h-8 bg-on-surface/10" />
+            <div className="w-px h-5 sm:h-8 bg-on-surface/10" />
             
             {/* Header Title (Visible on Mobile too) */}
-            <h1 className="text-sm sm:text-xl md:text-2xl font-black text-on-surface font-serif uppercase tracking-widest flex items-center gap-2 sm:gap-3">
+            <h1 className="text-xs sm:text-xl md:text-2xl font-black text-on-surface font-serif uppercase tracking-widest flex items-center gap-1.5 sm:gap-3">
               <Shield className="text-primary w-4 h-4 sm:w-6 sm:h-6 hidden xs:block" />
               <span className="hidden xs:inline">Admin Portal</span>
               <span className="xs:hidden">Admin</span>
             </h1>
           </div>
 
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-2 sm:gap-4">
             <span className="text-on-surface/30 text-[10px] font-black tracking-widest uppercase hidden md:inline-block">System Active</span>
             <button 
               onClick={handleLogout}
-              className="flex items-center gap-2 bg-on-surface/5 hover:bg-red-500/20 text-on-surface/60 hover:text-red-400 px-4 sm:px-6 py-2 sm:py-3 rounded-full transition-all font-black uppercase tracking-widest text-[10px] sm:text-xs"
+              className="flex items-center gap-1.5 bg-on-surface/5 hover:bg-red-500/20 text-on-surface/60 hover:text-red-400 px-3 sm:px-6 py-2 sm:py-3 rounded-full transition-all font-black uppercase tracking-widest text-[10px] sm:text-xs"
             >
               <span className="hidden sm:inline">Logout</span>
               <span className="sm:hidden">Exit</span>
             </button>
             <button 
               onClick={fetchData}
-              className="flex items-center gap-2 bg-primary/10 hover:bg-primary border border-primary/20 text-primary hover:text-black px-4 sm:px-6 py-2 sm:py-3 rounded-full transition-all font-black uppercase tracking-widest text-[10px] sm:text-xs shadow-luxury"
+              className="flex items-center gap-1.5 bg-primary/10 hover:bg-primary border border-primary/20 text-primary hover:text-black px-3 sm:px-6 py-2 sm:py-3 rounded-full transition-all font-black uppercase tracking-widest text-[10px] sm:text-xs shadow-luxury"
             >
-              <RefreshCw size={14} className={loading ? 'animate-spin' : ''} />
+              <RefreshCw size={12} className={loading ? 'animate-spin' : ''} />
               <span className="hidden sm:inline">Refresh Data</span>
               <span className="sm:hidden">Refresh</span>
             </button>
@@ -326,50 +326,95 @@ const Admin: React.FC = () => {
             className="w-full"
           >
             {activeTab === 'bookings' && (
-              <div className="overflow-x-auto">
-                <table className="w-full text-left">
-                  <thead>
-                    <tr className="bg-on-surface/5 border-b border-white/5">
-                      <th className="px-6 py-5 text-[10px] font-black uppercase tracking-widest text-primary">Customer</th>
-                      <th className="px-6 py-5 text-[10px] font-black uppercase tracking-widest text-primary">Ritual</th>
-                      <th className="px-6 py-5 text-[10px] font-black uppercase tracking-widest text-primary">Schedule</th>
-                      <th className="px-6 py-5 text-[10px] font-black uppercase tracking-widest text-primary">Notes</th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-white/5">
-                    {bookings.map((booking) => (
-                      <tr key={booking.id} className="hover:bg-on-surface/[0.02] transition-colors">
-                        <td className="px-6 py-6">
-                          <div className="font-bold text-on-surface">{booking.name}</div>
-                          <div className="text-xs text-on-surface/50 flex items-center gap-1 mt-1">
-                            <Phone size={12} className="text-primary" /> {booking.phone}
-                          </div>
-                        </td>
-                        <td className="px-6 py-6">
-                          <span className="bg-primary/10 text-primary px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider">
-                            {booking.service}
-                          </span>
-                        </td>
-                        <td className="px-6 py-6">
-                          <div className="text-sm font-medium text-on-surface flex items-center gap-2">
-                            <Calendar size={14} className="text-primary" /> {booking.date}
-                          </div>
-                          <div className="text-xs text-on-surface/50 flex items-center gap-2 mt-1">
-                            <Clock size={14} className="text-primary" /> {booking.time}
-                          </div>
-                        </td>
-                        <td className="px-6 py-6">
-                          <p className="text-sm text-on-surface/60 max-w-xs line-clamp-2">{booking.notes || '—'}</p>
-                        </td>
+              <div>
+                {/* Desktop View: Interactive Table */}
+                <div className="hidden md:block overflow-x-auto">
+                  <table className="w-full text-left">
+                    <thead>
+                      <tr className="bg-[#C9A24A]/5 border-b border-[#C9A24A]/15">
+                        <th className="px-6 py-5 text-[10px] font-black uppercase tracking-widest text-primary">Customer</th>
+                        <th className="px-6 py-5 text-[10px] font-black uppercase tracking-widest text-primary">Ritual</th>
+                        <th className="px-6 py-5 text-[10px] font-black uppercase tracking-widest text-primary">Schedule</th>
+                        <th className="px-6 py-5 text-[10px] font-black uppercase tracking-widest text-primary">Notes</th>
                       </tr>
-                    ))}
-                    {bookings.length === 0 && !loading && (
-                      <tr>
-                        <td colSpan={4} className="px-6 py-20 text-center text-on-surface/30 font-medium">No bookings found yet.</td>
-                      </tr>
-                    )}
-                  </tbody>
-                </table>
+                    </thead>
+                    <tbody className="divide-y divide-[#C9A24A]/10">
+                      {bookings.map((booking) => (
+                        <tr key={booking.id} className="hover:bg-[#C9A24A]/5 transition-all duration-300 hover:scale-[1.003] origin-center">
+                          <td className="px-6 py-6">
+                            <div className="font-bold text-on-surface">{booking.name}</div>
+                            <div className="text-xs text-on-surface/50 flex items-center gap-1 mt-1">
+                              <Phone size={12} className="text-primary" /> {booking.phone}
+                            </div>
+                          </td>
+                          <td className="px-6 py-6">
+                            <span className="bg-primary/10 text-primary px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider">
+                              {booking.service}
+                            </span>
+                          </td>
+                          <td className="px-6 py-6">
+                            <div className="text-sm font-medium text-on-surface flex items-center gap-2">
+                              <Calendar size={14} className="text-primary" /> {booking.date}
+                            </div>
+                            <div className="text-xs text-on-surface/50 flex items-center gap-2 mt-1">
+                              <Clock size={14} className="text-primary" /> {booking.time}
+                            </div>
+                          </td>
+                          <td className="px-6 py-6">
+                            <p className="text-sm text-on-surface/60 max-w-xs line-clamp-2">{booking.notes || '—'}</p>
+                          </td>
+                        </tr>
+                      ))}
+                      {bookings.length === 0 && !loading && (
+                        <tr>
+                          <td colSpan={4} className="px-6 py-20 text-center text-on-surface/30 font-medium">No bookings found yet.</td>
+                        </tr>
+                      )}
+                    </tbody>
+                  </table>
+                </div>
+
+                {/* Mobile View: High-contrast Cards List */}
+                <div className="md:hidden divide-y divide-[#C9A24A]/10">
+                  {bookings.map((booking) => (
+                    <div key={booking.id} className="p-5 space-y-4 hover:bg-[#C9A24A]/2 transition-colors">
+                      <div className="flex justify-between items-start">
+                        <div>
+                          <h4 className="font-bold text-base text-[#2B2B2B]">{booking.name}</h4>
+                          <a href={`tel:${booking.phone}`} className="text-xs text-primary font-bold flex items-center gap-1 mt-1">
+                            <Phone size={12} /> {booking.phone}
+                          </a>
+                        </div>
+                        <span className="bg-primary/10 text-primary px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider">
+                          {booking.service}
+                        </span>
+                      </div>
+
+                      <div className="flex gap-4 text-xs font-semibold text-on-surface/75 bg-on-surface/5 p-3 rounded-xl border border-[#C9A24A]/10">
+                        <div className="flex items-center gap-1">
+                          <Calendar size={13} className="text-primary" />
+                          <span>{booking.date}</span>
+                        </div>
+                        <div className="flex items-center gap-1">
+                          <Clock size={13} className="text-primary" />
+                          <span>{booking.time}</span>
+                        </div>
+                      </div>
+
+                      {booking.notes && (
+                        <div className="text-xs text-on-surface/60 bg-background/50 p-2.5 rounded-lg border border-on-surface/5">
+                          <span className="font-bold block text-[10px] uppercase text-primary mb-1">Notes</span>
+                          {booking.notes}
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                  {bookings.length === 0 && !loading && (
+                    <div className="px-6 py-16 text-center text-on-surface/30 font-medium">
+                      No bookings found yet.
+                    </div>
+                  )}
+                </div>
               </div>
             )}
             {activeTab === 'stories' && (
