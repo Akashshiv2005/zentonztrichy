@@ -180,14 +180,8 @@ const AdminServices: React.FC = () => {
         <div className="flex justify-between items-center bg-surface-dim/30 p-6 rounded-2xl border border-white/5">
           <div>
             <h2 className="text-xl font-bold text-on-surface">Manage Services</h2>
-            <p className="text-sm text-on-surface/60 mt-1">Add, update or delete services offered in your salon.</p>
+            <p className="text-sm text-on-surface/60 mt-1">Update or delete services offered in your salon.</p>
           </div>
-          {!showForm && (
-            <button onClick={handleAddNew} className="btn-premium flex items-center gap-2 text-sm px-4 py-2">
-              <Plus size={16} />
-              New Service
-            </button>
-          )}
         </div>
 
         <AnimatePresence mode="wait">
