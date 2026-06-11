@@ -17,7 +17,7 @@ const Book: React.FC = () => {
       <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-primary/5 rounded-full blur-[120px] pointer-events-none" />
 
       <div className="relative z-10 max-w-7xl mx-auto">
-        <div className="text-center mb-16">
+        <div className="text-center mb-6">
           <span className="text-primary font-black tracking-[0.4em] uppercase text-xs mb-4 block">
             Reserve Your Time
           </span>
@@ -51,12 +51,12 @@ const Book: React.FC = () => {
             ))}
           </div>
 
-          <div className="flex items-center justify-center min-h-[200px] mt-8">
+          <div className="flex items-center justify-center min-h-[120px] mt-6 mb-2">
             <ThreeDClock />
           </div>
         </div>
 
-        <div className="pt-8 sm:pt-16">
+        <div className="pt-2 sm:pt-4">
           <BookingSystem />
         </div>
       </div>
