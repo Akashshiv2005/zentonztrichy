@@ -69,7 +69,7 @@ const Services: FC = () => {
         if (targetElement) {
           const lenis = (window as any).lenisInstance;
           if (lenis) {
-            lenis.scrollTo(targetElement, { offset: -80, duration: 1.5 });
+            lenis.scrollTo(targetElement, { offset: 0, duration: 1.5 });
           } else {
             targetElement.scrollIntoView({ behavior: "smooth", block: "start" });
           }
