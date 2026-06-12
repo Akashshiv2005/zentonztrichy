@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { ScrollReveal } from "./ScrollReveal";
 import { useState, useEffect } from "react";
+import { API_BASE_URL } from "../../config";
 
 const pricingDataFallback = [
   { name: "Skin Care", price: "₹400+" },
@@ -20,7 +21,7 @@ export function PricingSection() {
   const [pricingData, setPricingData] = useState(pricingDataFallback);
 
   useEffect(() => {
-    fetch('http://localhost:8081/api/services')
+    fetch(`${API_BASE_URL}/api/services`)
       .then(r => r.json())
       .then((data: any[]) => {
         const merged = pricingDataFallback.map(fallback => {

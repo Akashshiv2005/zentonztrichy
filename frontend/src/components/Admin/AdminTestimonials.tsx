@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Save, X, Edit2, Trash2, Image as ImageIcon, Star } from 'lucide-react';
 import ConfirmModal from '../ui/ConfirmModal';
 import { AdminToast } from '../ui/AdminToast';
+import { API_BASE_URL } from '../../config';
 
 interface Testimonial {
   id: number;
@@ -36,7 +37,7 @@ const AdminTestimonials: React.FC = () => {
 
   const fetchTestimonials = async () => {
     try {
-      const res = await fetch('http://localhost:8081/api/testimonials');
+      const res = await fetch(`${API_BASE_URL}/api/testimonials`);
       const data = await res.json();
       setTestimonials(data);
     } catch (err) {
@@ -60,8 +61,8 @@ const AdminTestimonials: React.FC = () => {
 
     try {
       const url = isEditing && currentTestimonial.id
-        ? `http://localhost:8081/api/testimonials/${currentTestimonial.id}`
-        : 'http://localhost:8081/api/testimonials';
+        ? `${API_BASE_URL}/api/testimonials/${currentTestimonial.id}`
+        : `${API_BASE_URL}/api/testimonials`;
 
       const method = isEditing ? 'PUT' : 'POST';
 
@@ -85,7 +86,7 @@ const AdminTestimonials: React.FC = () => {
 
   const confirmDelete = async (id: number) => {
     try {
-      await fetch(`http://localhost:8081/api/testimonials/${id}`, {
+      await fetch(`${API_BASE_URL}/api/testimonials/${id}`, {
         method: 'DELETE',
       });
       setItemToDelete(null);
@@ -220,7 +221,7 @@ const AdminTestimonials: React.FC = () => {
                     <td className="px-6 py-6 min-w-[200px]">
                       <div className="flex items-center gap-4">
                         {(testimonial.image_name || testimonial.imageName) ? (
-                          <img src={`http://localhost:8081/api/gallery/images/${testimonial.image_name || testimonial.imageName}`} alt={testimonial.name} className="w-12 h-12 rounded-full object-cover" />
+                          <img src={`${API_BASE_URL}/api/gallery/images/${testimonial.image_name || testimonial.imageName}`} alt={testimonial.name} className="w-12 h-12 rounded-full object-cover" />
                         ) : (
                           <div className="w-12 h-12 rounded-full bg-on-surface/5 flex items-center justify-center text-on-surface/30">
                             <ImageIcon size={20} />

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Save, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { AdminToast } from '../ui/AdminToast';
+import { API_BASE_URL } from '../../config';
 
 interface Service {
   id: number;
@@ -48,7 +49,7 @@ const AdminServices: React.FC = () => {
 
   const fetchServices = async () => {
     try {
-      const res = await fetch('http://localhost:8081/api/services');
+      const res = await fetch(`${API_BASE_URL}/api/services`);
       const data = await res.json();
       setServices(data);
       return data;
@@ -85,8 +86,8 @@ const AdminServices: React.FC = () => {
 
     try {
       const url = isEditing && currentService.id 
-        ? `http://localhost:8081/api/services/${currentService.id}`
-        : 'http://localhost:8081/api/services';
+        ? `${API_BASE_URL}/api/services/${currentService.id}`
+        : `${API_BASE_URL}/api/services`;
         
       const method = isEditing && currentService.id ? 'PUT' : 'POST';
 

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import InteractiveBentoGallery from '../ui/interactive-bento-gallery';
 import type { MediaItemType } from '../ui/interactive-bento-gallery';
+import { API_BASE_URL } from '../../config';
 
 
 
@@ -23,7 +24,7 @@ const ClippedMediaGallery: React.FC = () => {
   const [items, setItems] = useState<MediaItemType[]>([]);
 
   useEffect(() => {
-    fetch('http://localhost:8081/api/gallery')
+    fetch(`${API_BASE_URL}/api/gallery`)
       .then(res => res.json())
       .then(data => {
         if (data && data.length > 0) {
@@ -33,7 +34,7 @@ const ClippedMediaGallery: React.FC = () => {
             type: "image",
             title: img.title || "Gallery Image",
             desc: img.description || "Uploaded via Admin",
-            url: `http://localhost:8081/api/gallery/images/${img.file_name}`,
+            url: `${API_BASE_URL}/api/gallery/images/${img.file_name}`,
             span: predefinedSpans[index % predefinedSpans.length],
             objectPosition: "center",
             objectFit: "cover"

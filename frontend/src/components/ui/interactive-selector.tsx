@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Crown, Sparkles, Wind, Gem, Leaf } from "lucide-react";
+import { API_BASE_URL } from "../../config";
 
 
 
@@ -24,7 +25,7 @@ const InteractiveSelector: React.FC = () => {
   };
 
   useEffect(() => {
-    fetch('http://localhost:8081/api/gallery')
+    fetch(`${API_BASE_URL}/api/gallery`)
       .then(res => res.json())
       .then(data => {
         if (data && data.length > 0) {
@@ -32,7 +33,7 @@ const InteractiveSelector: React.FC = () => {
           const apiOptions = galleryData.map((img: any) => ({
             title: img.title || "Gallery Upload",
             description: img.description || "Uploaded Image",
-            image: `http://localhost:8081/api/gallery/images/${img.file_name}`,
+            image: `${API_BASE_URL}/api/gallery/images/${img.file_name}`,
             icon: <Sparkles size={22} className="text-white" />,
             position: "contain"
           }));

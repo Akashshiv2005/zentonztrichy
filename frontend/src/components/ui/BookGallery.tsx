@@ -1,4 +1,5 @@
 import React from "react";
+import { API_BASE_URL } from "../../config";
 
 
 import logoImg from "../../assets/zentonez-logo.png";
@@ -13,12 +14,12 @@ const BookGallery: React.FC<BookGalleryProps> = ({ onLoaded }) => {
   ]);
 
   React.useEffect(() => {
-    fetch('http://localhost:8081/api/gallery')
+    fetch(`${API_BASE_URL}/api/gallery`)
       .then(res => res.json())
       .then(data => {
         if (data && data.length > 0) {
           const magazineData = data.filter((img: any) => img.is_magazine);
-          const apiImages = magazineData.map((img: any) => `http://localhost:8081/api/gallery/images/${img.file_name}`);
+          const apiImages = magazineData.map((img: any) => `${API_BASE_URL}/api/gallery/images/${img.file_name}`);
           
           // Always wrap the magazine pages with the logo as the front cover and back cover
           const fullImages = [logoImg, ...apiImages];

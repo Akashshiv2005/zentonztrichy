@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import { Send, Sparkles } from "lucide-react";
+import { API_BASE_URL } from "../../config";
 
 const ContactForm: React.FC = () => {
   const [formState, setFormState] = useState({
@@ -42,7 +43,7 @@ const ContactForm: React.FC = () => {
 
     try {
       // Send to Backend (to save in DB)
-      await fetch("http://localhost:8081/api/contact", {
+      await fetch(`${API_BASE_URL}/api/contact`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formState),

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Quote, Star } from "lucide-react";
+import { API_BASE_URL } from "../../config";
 
 interface Testimonial {
   id: number;
@@ -231,7 +232,7 @@ const TestimonialCard: React.FC<{ testimonial: Testimonial; delay: number }> = (
 
   const imageName = testimonial.image_name || testimonial.imageName;
   const imageUrl = imageName
-    ? `http://localhost:8081/api/gallery/images/${imageName}`
+    ? `${API_BASE_URL}/api/gallery/images/${imageName}`
     : ((testimonial.image && !isDicebear && !isBrokenAvatar) ? testimonial.image : fallbackAvatar);
 
   return (
@@ -286,7 +287,7 @@ const AboutTestimonials: React.FC = () => {
   useEffect(() => {
     const fetchTestimonials = async () => {
       try {
-        const res = await fetch('http://localhost:8081/api/testimonials');
+        const res = await fetch(`${API_BASE_URL}/api/testimonials`);
         const data = await res.json();
         if (data && data.length > 0) {
           setTestimonials(data);

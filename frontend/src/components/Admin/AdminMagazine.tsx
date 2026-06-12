@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { ImagePlus, Trash2, Loader2 } from 'lucide-react';
 import ConfirmModal from '../ui/ConfirmModal';
 import { AdminToast } from '../ui/AdminToast';
+import { API_BASE_URL } from '../../config';
 
 interface GalleryImage {
   id: number;
@@ -31,7 +32,7 @@ export function AdminMagazine() {
   const fetchImages = async () => {
     setLoading(true);
     try {
-      const res = await fetch('http://localhost:8081/api/gallery');
+      const res = await fetch(`${API_BASE_URL}/api/gallery`);
       if (res.ok) {
         const data = await res.json();
         setImages(data.filter((img: GalleryImage) => img.is_magazine));
@@ -59,7 +60,7 @@ export function AdminMagazine() {
     formData.append('is_magazine', 'true');
 
     try {
-      const res = await fetch('http://localhost:8081/api/gallery/upload', {
+      const res = await fetch(`${API_BASE_URL}/api/gallery/upload`, {
         method: 'POST',
         body: formData,
       });
@@ -80,7 +81,7 @@ export function AdminMagazine() {
 
   const confirmDelete = async (id: number) => {
     try {
-      const res = await fetch(`http://localhost:8081/api/gallery/${id}`, {
+      const res = await fetch(`${API_BASE_URL}/api/gallery/${id}`, {
         method: 'DELETE',
       });
       if (res.ok) {
@@ -155,7 +156,7 @@ export function AdminMagazine() {
               )}
               <div className="relative overflow-hidden aspect-square bg-black/20">
                 <img 
-                  src={`http://localhost:8081/api/gallery/images/${img.file_name}`} 
+                  src={`${API_BASE_URL}/api/gallery/images/${img.file_name}`} 
                   alt={img.file_name}
                   className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                 />

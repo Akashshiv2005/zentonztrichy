@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { Sparkles } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
+import { API_BASE_URL } from "../../config";
 
 import skinImage from "../../assets/facialwebpimages/facial6.png";
 import facialImage from "../../assets/facialwebpimages/facial2.webp";
@@ -119,7 +120,7 @@ export function ParallaxServicesSection() {
   const [dynamicServices, setDynamicServices] = React.useState(parallaxServicesFallback);
 
   React.useEffect(() => {
-    fetch('http://localhost:8081/api/services')
+    fetch(`${API_BASE_URL}/api/services`)
       .then(res => res.json())
       .then(data => {
         if (data && data.length > 0) {
@@ -134,7 +135,7 @@ export function ParallaxServicesSection() {
             return {
               title: s.title,
               description: s.description,
-              image: imageName ? `http://localhost:8081/api/gallery/images/${imageName}` : fallback.image,
+              image: imageName ? `${API_BASE_URL}/api/gallery/images/${imageName}` : fallback.image,
               price: s.price,
               benefits: s.highlights ? s.highlights.split(',').map((h: string) => h.trim()) : fallback.benefits,
               color: fallback.color,

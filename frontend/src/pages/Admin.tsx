@@ -10,6 +10,7 @@ import AdminTestimonials from '../components/Admin/AdminTestimonials';
 import AdminPromotions from '../components/Admin/AdminPromotions';
 import ConfirmModal from '../components/ui/ConfirmModal';
 import { AdminToast } from '../components/ui/AdminToast';
+import { API_BASE_URL } from '../config';
 
 interface Booking {
   id: number;
@@ -39,7 +40,7 @@ const Admin: React.FC = () => {
 
   const handleDeleteBooking = async (id: number) => {
     try {
-      const res = await fetch(`http://localhost:8081/api/reservations/${id}`, {
+      const res = await fetch(`${API_BASE_URL}/api/reservations/${id}`, {
         method: 'DELETE',
       });
       if (res.ok) {
@@ -61,7 +62,7 @@ const Admin: React.FC = () => {
     setIsLoggingIn(true);
     setLoginError('');
     try {
-      const res = await fetch('http://localhost:8081/api/admin/login', {
+      const res = await fetch(`${API_BASE_URL}/api/admin/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username: username.trim(), password: password.trim() })
@@ -89,7 +90,7 @@ const Admin: React.FC = () => {
   const fetchData = async () => {
     setLoading(true);
     try {
-      const bookRes = await fetch('http://localhost:8081/api/reservations');
+      const bookRes = await fetch(`${API_BASE_URL}/api/reservations`);
       
       if (bookRes.ok) {
         const data: Booking[] = await bookRes.json();

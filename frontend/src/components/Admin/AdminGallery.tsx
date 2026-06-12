@@ -3,6 +3,7 @@ import { ImagePlus, Trash2, Loader2, Edit2 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import ConfirmModal from '../ui/ConfirmModal';
 import { AdminToast } from '../ui/AdminToast';
+import { API_BASE_URL } from '../../config';
 
 interface GalleryImage {
   id: number;
@@ -37,7 +38,7 @@ export function AdminGallery() {
   const fetchImages = async () => {
     setLoading(true);
     try {
-      const res = await fetch('http://localhost:8081/api/gallery');
+      const res = await fetch(`${API_BASE_URL}/api/gallery`);
       if (res.ok) {
         const data = await res.json();
         setImages(data.filter((img: GalleryImage) => !img.is_magazine));
@@ -64,7 +65,7 @@ export function AdminGallery() {
     formData.append('description', description);
 
     try {
-      const res = await fetch('http://localhost:8081/api/gallery/upload', {
+      const res = await fetch(`${API_BASE_URL}/api/gallery/upload`, {
         method: 'POST',
         body: formData,
       });
@@ -87,7 +88,7 @@ export function AdminGallery() {
 
   const confirmDelete = async (id: number) => {
     try {
-      const res = await fetch(`http://localhost:8081/api/gallery/${id}`, {
+      const res = await fetch(`${API_BASE_URL}/api/gallery/${id}`, {
         method: 'DELETE',
       });
       if (res.ok) {
@@ -115,7 +116,7 @@ export function AdminGallery() {
 
   const handleUpdate = async (id: number) => {
     try {
-      const res = await fetch(`http://localhost:8081/api/gallery/${id}`, {
+      const res = await fetch(`${API_BASE_URL}/api/gallery/${id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -214,7 +215,7 @@ export function AdminGallery() {
               )}
               <div className="relative overflow-hidden aspect-square bg-black/20">
                 <img
-                  src={`http://localhost:8081/api/gallery/images/${img.file_name}`}
+                  src={`${API_BASE_URL}/api/gallery/images/${img.file_name}`}
                   alt={img.file_name}
                   className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                 />
@@ -279,7 +280,7 @@ export function AdminGallery() {
                 return editingImage ? (
                   <div className="mb-6 rounded-xl overflow-hidden max-h-40 flex justify-center items-center bg-black/5 relative border border-[#C9A24A]/10 mx-auto w-fit">
                     <img
-                      src={`http://localhost:8081/api/gallery/images/${editingImage.file_name}`}
+                      src={`${API_BASE_URL}/api/gallery/images/${editingImage.file_name}`}
                       alt="Preview"
                       className="max-h-48 w-auto object-contain block rounded-lg shadow-sm"
                     />

@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { Sparkles, Crown, Gift } from "lucide-react";
 import bridalOfferImage from "../../assets/bridal_offer.png";
+import { API_BASE_URL } from "../../config";
 
 interface Promotion {
   id: number;
@@ -23,7 +24,7 @@ const BridalOffer: React.FC = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("http://localhost:8081/api/promotions/active")
+    fetch(`${API_BASE_URL}/api/promotions/active`)
       .then((res) => {
         if (res.status === 204) {
           return null;
@@ -55,7 +56,7 @@ const BridalOffer: React.FC = () => {
     : ["Exclusive for Regular Customers", "Complete Bridal Transformation"];
 
   const imageUrl = promotion?.image_name 
-    ? `http://localhost:8081/api/gallery/images/${promotion.image_name.replace(/"/g, '')}` 
+    ? `${API_BASE_URL}/api/gallery/images/${promotion.image_name.replace(/"/g, '')}` 
     : bridalOfferImage;
 
   return (

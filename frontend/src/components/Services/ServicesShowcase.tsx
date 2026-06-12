@@ -13,6 +13,7 @@ import nails from "../../assets/nailwebpimages/nail.jpeg";
 import liceRemoval from "../../assets/licewebpimages/lice4.webp";
 import hairStyle from "../../assets/hairwebp images/curlyhairstyle.webp";
 import wartRemoval from "../../assets/wartremovalwebpimages/wartdarkimg1.webp";
+import { API_BASE_URL } from "../../config";
 import earPiercing from "../../assets/earpiercingimages/earpiercing.webp";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -331,7 +332,7 @@ const ServicesShowcase: React.FC = () => {
   const [services, setServices] = React.useState<Service[]>(fallbackServices);
   
   useEffect(() => {
-    fetch('http://localhost:8081/api/services')
+    fetch(`${API_BASE_URL}/api/services`)
       .then(res => res.json())
       .then(data => {
         if (data && data.length > 0) {
@@ -357,7 +358,7 @@ const ServicesShowcase: React.FC = () => {
               price: s.price,
               duration: s.duration,
               highlights: s.highlights ? s.highlights.split(',').map((h:string)=>h.trim()) : [],
-              image: imageName ? `http://localhost:8081/api/gallery/images/${imageName}` : fallbackMatch.image,
+              image: imageName ? `${API_BASE_URL}/api/gallery/images/${imageName}` : fallbackMatch.image,
               color: fallbackMatch.color,
               icon: fallbackMatch.icon,
               review: fallbackMatch.review,

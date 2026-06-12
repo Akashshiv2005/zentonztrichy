@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Sparkles, Scissors, Droplets, CheckCircle, ChevronLeft, ShieldCheck, User, Phone, Clock } from 'lucide-react';
+import { API_BASE_URL } from '../../config';
 
 type ServiceType = {
   id: string;
@@ -45,7 +46,7 @@ export const BookingSystem: React.FC = () => {
   const [services, setServices] = useState<ServiceType[]>(SERVICES_FALLBACK);
 
   useEffect(() => {
-    fetch('http://localhost:8081/api/services')
+    fetch(`${API_BASE_URL}/api/services`)
       .then(res => res.json())
       .then((fetchedData: any[]) => {
         const merged = SERVICES_FALLBACK.map(fs => {
@@ -83,7 +84,7 @@ export const BookingSystem: React.FC = () => {
   const fetchBookedSlots = async (service: string, date: Date): Promise<string[]> => {
     try {
       const dateStr = date.toISOString().split('T')[0];
-      const res = await fetch(`http://localhost:8081/api/reservations/booked-slots?service=${service}&date=${dateStr}`);
+      const res = await fetch(`${API_BASE_URL}/api/reservations/booked-slots?service=${service}&date=${dateStr}`);
       return await res.json();
     } catch {
       return [];
@@ -367,7 +368,7 @@ export const BookingSystem: React.FC = () => {
             setIsSubmitting(true);
             try {
               // 1. Send to Backend (to save in DB)
-              const res = await fetch('http://localhost:8081/api/reservations', {
+              const res = await fetch(`${API_BASE_URL}/api/reservations`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -480,7 +481,7 @@ export const BookingSystem: React.FC = () => {
           setIsSubmitting(true);
           try {
             // 1. Send to Backend (to save in DB)
-            const res = await fetch('http://localhost:8081/api/reservations', {
+            const res = await fetch(`${API_BASE_URL}/api/reservations`, {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({

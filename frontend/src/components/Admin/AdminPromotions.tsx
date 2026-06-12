@@ -3,6 +3,7 @@ import { Plus, Trash2, Edit2, Check, X, Image as ImageIcon, Gift } from "lucide-
 import { motion, AnimatePresence } from "framer-motion";
 import ConfirmModal from '../ui/ConfirmModal';
 import { AdminToast } from '../ui/AdminToast';
+import { API_BASE_URL as CONFIG_API_BASE_URL } from "../../config";
 
 interface Promotion {
   id: number;
@@ -19,9 +20,9 @@ interface Promotion {
   imageName: string;
 }
 
-const API_BASE_URL = "http://localhost:8081/api/promotions";
-const UPLOAD_URL = "http://localhost:8081/api/promotions/upload";
-const GALLERY_IMAGE_URL = "http://localhost:8081/api/gallery/images";
+const API_BASE_URL = `${CONFIG_API_BASE_URL}/api/promotions`;
+const UPLOAD_URL = `${CONFIG_API_BASE_URL}/api/promotions/upload`;
+const GALLERY_IMAGE_URL = `${CONFIG_API_BASE_URL}/api/gallery/images`;
 
 const defaultPromotion: Promotion = {
   id: 0,
