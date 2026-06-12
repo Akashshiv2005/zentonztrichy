@@ -1,6 +1,7 @@
 import { useRef, useState } from "react";
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import { Sparkles, ArrowRight } from "lucide-react";
+import membershipCardImg from "../../assets/membershipcard.png";
 
 interface LuxuryMembershipHeroProps {
   title: string;
@@ -200,7 +201,7 @@ export const LuxuryMembershipHero: React.FC<LuxuryMembershipHeroProps> = ({
               />
 
               <img
-                src="/src/assets/membershipcard.png"
+                src={membershipCardImg}
                 alt="Zen Tonez Premium Membership Card"
                 className="w-full h-auto rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.3)] border border-[#B87333]/20 relative z-10"
               />
