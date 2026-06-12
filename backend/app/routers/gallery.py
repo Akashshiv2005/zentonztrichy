@@ -91,9 +91,5 @@ def serve_image(file_name: str):
         # We redirect the browser directly to MinIO
         return RedirectResponse(url=url, status_code=302)
         
-    except HTTPException as he:
-        raise he
     except Exception as e:
-        import traceback
-        traceback.print_exc()
-        raise HTTPException(status_code=500, detail=f"MinIO presign error: {str(e)}")
+        raise HTTPException(status_code=404, detail="File not found")
