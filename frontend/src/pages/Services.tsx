@@ -28,30 +28,42 @@ const Services: FC = () => {
   useEffect(() => {
     const hash = location.hash;
     if (hash) {
-      let serviceKey = hash.replace("#", "");
-      // Map 'lice-removal' hash to 'lice-treatment' to match the database service title
-      if (serviceKey === "lice-removal") {
-        serviceKey = "lice-treatment";
+      const originalKey = hash.replace("#", "");
+      // Create a list of potential service keys to try (e.g. support both aliases)
+      const potentialKeys = [originalKey];
+      if (originalKey === "lice-removal") {
+        potentialKeys.push("lice-treatment");
+      } else if (originalKey === "lice-treatment") {
+        potentialKeys.push("lice-removal");
       }
       
       // Short delay to ensure elements are fully rendered and layout shifts are resolved
       setTimeout(() => {
-        const elements = document.querySelectorAll(`[data-service="${serviceKey}"]`);
         let targetElement: HTMLElement | null = null;
         
-        // Find the element that is actually visible in the DOM
-        elements.forEach((el) => {
-          if (el instanceof HTMLElement && el.offsetParent !== null) {
-            targetElement = el;
-          }
-        });
+        // Try to find the visible element for any of the potential keys
+        for (const key of potentialKeys) {
+          const elements = document.querySelectorAll(`[data-service="${key}"]`);
+          elements.forEach((el) => {
+            if (el instanceof HTMLElement && el.offsetParent !== null) {
+              targetElement = el;
+            }
+          });
+          if (targetElement) break;
+        }
 
-        // Fallback to absolute query selector if offsetParent check yields nothing
+        // Fallback to ID selectors if no visible data-service element found
         if (!targetElement) {
-          // If we mapped to lice-treatment but need to fallback, try both
-          targetElement = document.querySelector(`#mobile-${serviceKey}`) || 
-                          document.querySelector(`#desktop-${serviceKey}`) ||
-                          document.querySelector(hash);
+          for (const key of potentialKeys) {
+            targetElement = document.querySelector(`#mobile-${key}`) || 
+                            document.querySelector(`#desktop-${key}`);
+            if (targetElement) break;
+          }
+        }
+
+        // Final fallback to the raw hash
+        if (!targetElement) {
+          targetElement = document.querySelector(hash);
         }
 
         if (targetElement) {
