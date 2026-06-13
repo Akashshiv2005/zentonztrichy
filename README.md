@@ -53,10 +53,17 @@ Using a fluid scale implemented via CSS `clamp()` to scale perfectly from mobile
 
 Ensure you have **Python 3.10+**, **Node.js 18+**, **PostgreSQL**, and **MinIO** installed on your system before proceeding.
 
-### 1️⃣ Database Setup (PostgreSQL)
-1. Open pgAdmin or PSQL.
-2. Create a new database named **`zentonez`**.
-3. Set your PostgreSQL user password to `1234` (or update connection strings in `backend/app/database.py` and `backend/seed_db.py`).
+### 1️⃣ Database Setup (PostgreSQL & pgAdmin)
+1. Open **pgAdmin** on your computer.
+2. In the left browser panel, expand **Servers** -> **PostgreSQL (your version)**.
+3. Enter your superuser password when prompted.
+4. Right-click on **Databases** -> **Create** -> **Database...**
+5. Under the **General** tab:
+   * Set **Database** field to **`zentonez`**
+   * Set **Owner** to **`postgres`**
+6. Click **Save** to create the database.
+7. Ensure your PostgreSQL master user password is set to `1234` (or update the `DATABASE_URL` in `backend/.env` or `backend/app/database.py`).
+
 
 ### 2️⃣ Object Storage Setup (MinIO)
 1. Download [MinIO Server for Windows](https://dl.min.io/server/minio/release/windows-amd64/minio.exe).
