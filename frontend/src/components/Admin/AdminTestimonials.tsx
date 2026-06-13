@@ -10,7 +10,8 @@ interface Testimonial {
   service: string;
   quote: string;
   rating: number;
-  imageName: string;
+  imageName?: string;
+  image_name?: string;
 }
 
 const AdminTestimonials: React.FC = () => {

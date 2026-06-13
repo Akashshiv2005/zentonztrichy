@@ -11,6 +11,7 @@ interface Testimonial {
   rating: number;
   image?: string;
   imageName?: string;
+  image_name?: string;
 }
 
 const FALLBACK_TESTIMONIALS: Testimonial[] = [

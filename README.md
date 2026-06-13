@@ -100,8 +100,9 @@ Ensure you have **Python 3.10+**, **Node.js 18+**, **PostgreSQL**, and **MinIO**
    ```
 6. Start the backend development server:
    ```bash
-   uvicorn app.main:app --reload --port 8081
+   uvicorn app.main:app --reload
    ```
+
 
 ---
 
