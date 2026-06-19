@@ -134,11 +134,15 @@ Now open [http://localhost:5173](http://localhost:5173) in your browser to view 
 ### 🔄 Exporting Admin Modifications (Seed Backup)
 If you add or update services, testimonials, or gallery images through the Admin Panel and want to save them back into your codebase (for seed backups):
 1. Ensure your local PostgreSQL database and MinIO server are running.
-2. Run the export script inside the `backend` directory:
+2. Export your database entries to `zentonez_data.json`:
    ```bash
-   python export_data.py
+   python seed_db.py --export
    ```
-This will automatically update `zentonez_data.json` and download the new images from MinIO into the `minio_export` folder, making them ready to commit.
+3. Export your MinIO images back to `minio_export` directory:
+   ```bash
+   python import_minio.py --export
+   ```
+This updates `zentonez_data.json` and downloads the new images, making them ready to commit.
 
 ---
 

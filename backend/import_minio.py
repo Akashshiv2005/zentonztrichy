@@ -68,5 +68,36 @@ def import_minio_images():
             
     print("MinIO image import completed successfully!")
 
+def export_minio_images():
+    print(f"Connecting to MinIO at {MINIO_ENDPOINT} (secure={MINIO_SECURE})...")
+    client = Minio(
+        MINIO_ENDPOINT,
+        access_key=MINIO_ACCESS_KEY,
+        secret_key=MINIO_SECRET_KEY,
+        secure=MINIO_SECURE
+    )
+
+    export_dir = "minio_export"
+    if not os.path.exists(export_dir):
+        print(f"Creating directory '{export_dir}'...")
+        os.makedirs(export_dir)
+
+    print(f"Downloading images from bucket '{MINIO_BUCKET}' to '{export_dir}'...")
+    try:
+        objects = client.list_objects(MINIO_BUCKET)
+        for obj in objects:
+            file_name = obj.object_name
+            dest_path = os.path.join(export_dir, file_name)
+            print(f"  Downloading {file_name}...")
+            client.fget_object(MINIO_BUCKET, file_name, dest_path)
+        print("MinIO image export completed successfully!")
+    except Exception as e:
+        print(f"Error exporting MinIO images: {e}")
+
 if __name__ == "__main__":
-    import_minio_images()
+    import sys
+    if "--export" in sys.argv or "-e" in sys.argv:
+        export_minio_images()
+    else:
+        import_minio_images()
+

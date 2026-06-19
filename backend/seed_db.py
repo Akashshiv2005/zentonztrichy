@@ -91,5 +91,40 @@ def seed_database():
         
     print("Database seeding is complete!")
 
+def export_database():
+    print("Connecting to the database...")
+    Session = sessionmaker(bind=engine)
+    session = Session()
+
+    data = {}
+
+    def to_dict(obj):
+        d = {}
+        for column in obj.__table__.columns:
+            val = getattr(obj, column.name)
+            if hasattr(val, 'isoformat'):
+                val = val.isoformat()
+            d[column.name] = val
+        return d
+
+    print("Exporting database tables to zentonez_data.json...")
+    data['admin_users'] = [to_dict(x) for x in session.query(AdminUser).all()]
+    data['promotions'] = [to_dict(x) for x in session.query(Promotion).all()]
+    data['services'] = [to_dict(x) for x in session.query(Service).all()]
+    data['testimonials'] = [to_dict(x) for x in session.query(Testimonial).all()]
+    data['gallery'] = [to_dict(x) for x in session.query(GalleryImage).all()]
+    data['reservations'] = [to_dict(x) for x in session.query(Reservation).all()]
+    data['contacts'] = [to_dict(x) for x in session.query(Contact).all()]
+
+    session.close()
+
+    with open('zentonez_data.json', 'w', encoding='utf-8') as f:
+        json.dump(data, f, indent=4, ensure_ascii=False)
+    print("Database export complete!")
+
 if __name__ == "__main__":
-    seed_database()
+    if "--export" in sys.argv or "-e" in sys.argv:
+        export_database()
+    else:
+        seed_database()
+
