@@ -131,6 +131,17 @@ Now open [http://localhost:5173](http://localhost:5173) in your browser to view 
 
 ---
 
+### 🔄 Exporting Admin Modifications (Seed Backup)
+If you add or update services, testimonials, or gallery images through the Admin Panel and want to save them back into your codebase (for seed backups):
+1. Ensure your local PostgreSQL database and MinIO server are running.
+2. Run the export script inside the `backend` directory:
+   ```bash
+   python export_data.py
+   ```
+This will automatically update `zentonez_data.json` and download the new images from MinIO into the `minio_export` folder, making them ready to commit.
+
+---
+
 ## 🔑 Credentials
 
 * **Web App URL**: [http://localhost:5173](http://localhost:5173)
